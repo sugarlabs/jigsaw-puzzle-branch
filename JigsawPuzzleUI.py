@@ -29,7 +29,6 @@ from mamamedia_modules import CategorySelector
 from mamamedia_modules import ImageSelectorWidget
 from mamamedia_modules import LanguageComboBox
 from mamamedia_modules import TimerWidget
-from mamamedia_modules import NotebookReaderWidget
 from mamamedia_modules import BuddyPanel, BUDDYMODE_COLLABORATION
 
 from mamamedia_modules import GAME_IDLE, GAME_STARTED, GAME_FINISHED
@@ -276,16 +275,6 @@ class JigsawPuzzleUI (BorderFrame):
         self.msg_label.show()
         timer_hbox.pack_start(self.msg_label, True)
         
-        self.btn_lesson = prepare_btn(gtk.Button(" "))
-        self.labels_to_translate.append([self.btn_lesson, _("Lesson Plans")])
-        self.btn_lesson.connect("clicked", self.do_lesson_plan)
-        timer_hbox.pack_start(self.btn_lesson, False, padding=8)
-        vbox = gtk.VBox(False)
-        vbox.pack_start(timer_hbox, padding=8)
-        timer_box.add(vbox)
-        inner_table.attach(timer_box, 1,2,1,2,gtk.FILL, gtk.FILL)
-        #panel.pack_start(lang_box, expand=False, fill=False)
-
         self.do_select_language(lang_combo)
         
         self.buddy_panel = BuddyPanel(BUDDYMODE_COLLABORATION)
@@ -488,29 +477,6 @@ class JigsawPuzzleUI (BorderFrame):
             else:
                 m = self.do_select_category
             m(self)
-
-    def do_lesson_plan (self, btn):
-        page = self.notebook.get_current_page()
-
-        if page == 0:
-            if self.notebook.get_n_pages() == 1:
-                lessons = NotebookReaderWidget('lessons',
-                        self.selected_lang_details)
-                lessons.connect('parent-set', self.do_lesson_plan_reparent)
-                lessons.show_all()
-                self.notebook.append_page(lessons)
-
-        self.notebook.set_current_page(int(not page))
-
-    def do_lesson_plan_reparent (self, widget, oldparent):
-        if not self.btn_lesson.get_child():
-            return
-        if widget.parent is None:
-            self.set_button_translation(self.btn_lesson, "Lesson Plans")
-            self.btn_lesson.get_child().set_label(_("Lesson Plans"))
-        else:
-            self.set_button_translation(self.btn_lesson, "Close Lesson")
-            self.btn_lesson.get_child().set_label(_("Close Lesson"))
 
     def set_piece_cut (self, btn, cutter, *args):
         if self.is_readonly():
