@@ -272,7 +272,3 @@ msgstr "Vælg billede"
 #: mmm_modules/image_category.py:235
 msgid "Not a valid image file"
 msgstr "Ikke en gyldig billedfil"
-
-#, python-format
-#~ msgid "Buddy '%s' changed status: %s"
-#~ msgstr "Kammerat '%s' ændrede status: %s"

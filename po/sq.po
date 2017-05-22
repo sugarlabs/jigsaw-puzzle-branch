@@ -2,56 +2,21 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-15 00:31-0500\n"
-"PO-Revision-Date: 2011-04-07 04:55+0200\n"
-"Last-Translator: Chris <cjl@laptop.org>\n"
+"PO-Revision-Date: 2017-02-19 23:50+0000\n"
+"Last-Translator: Chris <cjl@sugarlabs.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.1\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1487548212.000000\n"
 
 #: activity/activity.info:2
 msgid "Jigsaw Puzzle"
@@ -60,29 +25,29 @@ msgstr ""
 #: JigsawPuzzleActivity.py:188
 #, python-format
 msgid "Buddy '%(buddy)s' changed status: %(status)s"
-msgstr ""
+msgstr "Shoku '%(buddy)s' ndryshoi gjendjen në: %(status)s"
 
 #: JigsawPuzzleActivity.py:261
 #, python-format
 msgid "Buddy '%s' joined the game!"
-msgstr ""
+msgstr "Shoku '%s' hyri në lojë!"
 
 #: JigsawPuzzleActivity.py:265
 #, python-format
 msgid "Buddy '%s' left the game!"
-msgstr ""
+msgstr "Shoku '%s' e la lojën!"
 
 #: JigsawPuzzleUI.py:215
 msgid "Solve"
-msgstr ""
+msgstr "Zgjidhe"
 
 #: JigsawPuzzleUI.py:219
 msgid "Shuffle"
-msgstr ""
+msgstr "Përzieji"
 
 #: JigsawPuzzleUI.py:223
 msgid "My Picture"
-msgstr ""
+msgstr "Fotoja Ime"
 
 #: JigsawPuzzleUI.py:227
 msgid "Board Hint"
@@ -90,23 +55,23 @@ msgstr ""
 
 #: JigsawPuzzleUI.py:271
 msgid "Time: "
-msgstr ""
+msgstr "Kohë: "
 
 #: JigsawPuzzleUI.py:280 JigsawPuzzleUI.py:510
 msgid "Lesson Plans"
-msgstr ""
+msgstr "Plane Mësimesh"
 
 #: JigsawPuzzleUI.py:316
 msgid "Select image and press Start Game..."
-msgstr ""
+msgstr "Përzgjidhni një figurë dhe shtypni mbi Filloje Lojën…"
 
 #: JigsawPuzzleUI.py:320
 msgid "Waiting for Puzzle image to be chosen..."
-msgstr ""
+msgstr "Po pritet që të zgjidhet figurë Puzzle-i…"
 
 #: JigsawPuzzleUI.py:322 JigsawPuzzleUI.py:368
 msgid "Buddies"
-msgstr ""
+msgstr "Shokë"
 
 #: JigsawPuzzleUI.py:328
 msgid "Game Running"
@@ -114,19 +79,19 @@ msgstr ""
 
 #: JigsawPuzzleUI.py:358
 msgid "Start Game"
-msgstr ""
+msgstr "Filloje Lojën"
 
 #: JigsawPuzzleUI.py:388
 msgid "Choose a Subject"
-msgstr ""
+msgstr "Zgjidhni një Subjekt"
 
 #: JigsawPuzzleUI.py:441
 msgid "Puzzle Solved!"
-msgstr ""
+msgstr "E zgjidhët Lojën!"
 
 #: JigsawPuzzleUI.py:443
 msgid "Press Stop on the Toolbar to Exit Activity!"
-msgstr ""
+msgstr "Shtypni Stop te Paneli që të Dilet nga Veprimtaria!"
 
 #: JigsawPuzzleUI.py:478
 msgid "Jigsaw Puzzle Activity"
@@ -134,43 +99,43 @@ msgstr ""
 
 #: JigsawPuzzleUI.py:513
 msgid "Close Lesson"
-msgstr ""
+msgstr "Mbylle Mësimin"
 
 #: JigsawPuzzleUI.py:583
 msgid "Game Started!"
-msgstr ""
+msgstr "Loja Filloi!"
 
 #: JigsawPuzzleUI.py:585
 msgid "Waiting for Puzzle image to be transferred..."
-msgstr ""
+msgstr "Po pritet për shpërnguljen e figurës së Puzzle-it…"
 
 #: i18n_misc_strings.py:1
 msgid "Overview"
-msgstr ""
+msgstr "Përmbledhje"
 
 #: i18n_misc_strings.py:2
 msgid "Lesson 3"
-msgstr ""
+msgstr "Mësimi 3"
 
 #: i18n_misc_strings.py:3
 msgid "Lesson 1"
-msgstr ""
+msgstr "Mësimi 1"
 
 #: i18n_misc_strings.py:4
 msgid "Lesson 2"
-msgstr ""
+msgstr "Mësimi 2"
 
 #: mmm_modules/buddy_panel.py:49
 msgid "Buddy"
-msgstr ""
+msgstr "Shok"
 
 #: mmm_modules/buddy_panel.py:55
 msgid "Status"
-msgstr ""
+msgstr "Gjendje"
 
 #: mmm_modules/buddy_panel.py:62
 msgid "Play Time"
-msgstr ""
+msgstr "Kohë Loje"
 
 #: mmm_modules/buddy_panel.py:69
 msgid "Joined at"
@@ -182,11 +147,11 @@ msgstr ""
 
 #: mmm_modules/buddy_panel.py:115
 msgid "Playing"
-msgstr ""
+msgstr "Po luhet"
 
 #: mmm_modules/buddy_panel.py:115
 msgid "Paused"
-msgstr ""
+msgstr "Pushuar"
 
 #: mmm_modules/buddy_panel.py:117
 msgid "Finished"
@@ -194,7 +159,7 @@ msgstr "E kryer"
 
 #: mmm_modules/buddy_panel.py:119
 msgid "Gave up"
-msgstr ""
+msgstr "U dorëzua"
 
 #: mmm_modules/buddy_panel.py:121
 msgid "Unknown"
@@ -203,108 +168,108 @@ msgstr "I panjohur"
 #: mmm_modules/buddy_panel.py:123
 #, python-format
 msgid "%i minutes"
-msgstr ""
+msgstr "%i minuta"
 
 #: mmm_modules/i18n.py:36
 msgid "Chinese (simplified)"
-msgstr ""
+msgstr "Kineze (e thjeshtuar)"
 
 #: mmm_modules/i18n.py:37
 msgid "Chinese (traditional)"
-msgstr ""
+msgstr "Kineze (tradicionale)"
 
 #: mmm_modules/i18n.py:38
 msgid "Czech"
-msgstr ""
+msgstr "Çekisht"
 
 #: mmm_modules/i18n.py:39
 msgid "Danish"
-msgstr ""
+msgstr "Danisht"
 
 #: mmm_modules/i18n.py:40
 msgid "Dutch"
-msgstr ""
+msgstr "Holandisht"
 
 #: mmm_modules/i18n.py:41
 msgid "English"
-msgstr ""
+msgstr "Anglisht"
 
 #: mmm_modules/i18n.py:42
 msgid "English - Great Britain"
-msgstr ""
+msgstr "Anglisht - Mbretëria e Bashkuar"
 
 #: mmm_modules/i18n.py:43
 msgid "English - U.S."
-msgstr ""
+msgstr "Anglisht - ShBA"
 
 #: mmm_modules/i18n.py:44
 msgid "Finnish"
-msgstr ""
+msgstr "Finlandisht"
 
 #: mmm_modules/i18n.py:45
 msgid "French"
-msgstr ""
+msgstr "Frëngjisht"
 
 #: mmm_modules/i18n.py:46
 msgid "German"
-msgstr ""
+msgstr "Gjermanisht"
 
 #: mmm_modules/i18n.py:47
 msgid "Hungarian"
-msgstr ""
+msgstr "Hungarisht"
 
 #: mmm_modules/i18n.py:48
 msgid "Italian"
-msgstr ""
+msgstr "Italisht"
 
 #: mmm_modules/i18n.py:49
 msgid "Japanese"
-msgstr ""
+msgstr "Japonisht"
 
 #: mmm_modules/i18n.py:50
 msgid "Korean"
-msgstr ""
+msgstr "Koreançe"
 
 #: mmm_modules/i18n.py:51
 msgid "Norwegian"
-msgstr ""
+msgstr "Norvegjishte"
 
 #: mmm_modules/i18n.py:52
 msgid "Polish"
-msgstr ""
+msgstr "Polonisht"
 
 #: mmm_modules/i18n.py:53
 msgid "Portuguese"
-msgstr ""
+msgstr "Portugalisht"
 
 #: mmm_modules/i18n.py:54
 msgid "Portuguese - Brazilian"
-msgstr ""
+msgstr "Portugalisht - (Brazil)"
 
 #: mmm_modules/i18n.py:55
 msgid "Russian"
-msgstr ""
+msgstr "Rusisht"
 
 #: mmm_modules/i18n.py:56
 msgid "Slovak"
-msgstr ""
+msgstr "Slovakisht"
 
 #: mmm_modules/i18n.py:57
 msgid "Spanish"
-msgstr ""
+msgstr "Spanjisht"
 
 #: mmm_modules/i18n.py:58
 msgid "Swedish"
-msgstr ""
+msgstr "Suedisht"
 
 #: mmm_modules/i18n.py:59
 msgid "Turkish"
-msgstr ""
+msgstr "Turqisht"
 
 #: mmm_modules/image_category.py:219 mmm_modules/image_category.py:223
 msgid "Choose image"
-msgstr ""
+msgstr "Zgjidhni figurë"
 
 #: mmm_modules/image_category.py:235
 msgid "Not a valid image file"
-msgstr ""
+msgstr "Kartelë jo e vlefshme figure"

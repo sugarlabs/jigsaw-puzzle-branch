@@ -2,75 +2,40 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-15 00:31-0500\n"
-"PO-Revision-Date: 2010-10-12 21:54+0200\n"
-"Last-Translator: frannyberry <frannyberry@writeme.com>\n"
+"PO-Revision-Date: 2016-04-26 18:07+0000\n"
+"Last-Translator: Robert <rbuj@fedoraproject.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.3\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1461694067.000000\n"
 
 #: activity/activity.info:2
 msgid "Jigsaw Puzzle"
-msgstr ""
+msgstr "Puzle"
 
 #: JigsawPuzzleActivity.py:188
 #, python-format
 msgid "Buddy '%(buddy)s' changed status: %(status)s"
-msgstr ""
+msgstr "El company «%(buddy)s» ha canviat el seu estat: %(status)s"
 
 #: JigsawPuzzleActivity.py:261
 #, python-format
 msgid "Buddy '%s' joined the game!"
-msgstr ""
+msgstr "El company «%s» s'ha unit a la partida!"
 
 #: JigsawPuzzleActivity.py:265
 #, python-format
 msgid "Buddy '%s' left the game!"
-msgstr ""
+msgstr "El company «%s» ha abandonat la partida!"
 
 #: JigsawPuzzleUI.py:215
 msgid "Solve"
@@ -78,15 +43,15 @@ msgstr "Resol"
 
 #: JigsawPuzzleUI.py:219
 msgid "Shuffle"
-msgstr "Ordre aleatori"
+msgstr "Remena"
 
 #: JigsawPuzzleUI.py:223
 msgid "My Picture"
-msgstr ""
+msgstr "La meva imatge"
 
 #: JigsawPuzzleUI.py:227
 msgid "Board Hint"
-msgstr ""
+msgstr "Suggeriment del tauler"
 
 #: JigsawPuzzleUI.py:271
 msgid "Time: "
@@ -94,55 +59,55 @@ msgstr "Temps: "
 
 #: JigsawPuzzleUI.py:280 JigsawPuzzleUI.py:510
 msgid "Lesson Plans"
-msgstr ""
+msgstr "Plans de lliçons"
 
 #: JigsawPuzzleUI.py:316
 msgid "Select image and press Start Game..."
-msgstr ""
+msgstr "Seleccioneu la imatge i premeu Comença la partida..."
 
 #: JigsawPuzzleUI.py:320
 msgid "Waiting for Puzzle image to be chosen..."
-msgstr ""
+msgstr "A l'espera fins que es triï la imatge del puzle..."
 
 #: JigsawPuzzleUI.py:322 JigsawPuzzleUI.py:368
 msgid "Buddies"
-msgstr ""
+msgstr "Companys"
 
 #: JigsawPuzzleUI.py:328
 msgid "Game Running"
-msgstr ""
+msgstr "La partida està en marxa"
 
 #: JigsawPuzzleUI.py:358
 msgid "Start Game"
-msgstr "Comença el joc"
+msgstr "Comença la partida"
 
 #: JigsawPuzzleUI.py:388
 msgid "Choose a Subject"
-msgstr ""
+msgstr "Trieu un tema"
 
 #: JigsawPuzzleUI.py:441
 msgid "Puzzle Solved!"
-msgstr "Has resolt el trencaclosques!"
+msgstr "Puzle resolt!"
 
 #: JigsawPuzzleUI.py:443
 msgid "Press Stop on the Toolbar to Exit Activity!"
-msgstr ""
+msgstr "Premeu Atura en la barra d'eines per a sortir de l'activitat!"
 
 #: JigsawPuzzleUI.py:478
 msgid "Jigsaw Puzzle Activity"
-msgstr ""
+msgstr "Activitat Puzle"
 
 #: JigsawPuzzleUI.py:513
 msgid "Close Lesson"
-msgstr ""
+msgstr "Tanca la lliçó"
 
 #: JigsawPuzzleUI.py:583
 msgid "Game Started!"
-msgstr ""
+msgstr "Partida iniciada!"
 
 #: JigsawPuzzleUI.py:585
 msgid "Waiting for Puzzle image to be transferred..."
-msgstr ""
+msgstr "A l'espera que es transfereixi la imatge del puzle..."
 
 #: i18n_misc_strings.py:1
 msgid "Overview"
@@ -150,19 +115,19 @@ msgstr "Resum"
 
 #: i18n_misc_strings.py:2
 msgid "Lesson 3"
-msgstr ""
+msgstr "Lliçó 3"
 
 #: i18n_misc_strings.py:3
 msgid "Lesson 1"
-msgstr ""
+msgstr "Lliçó 1"
 
 #: i18n_misc_strings.py:4
 msgid "Lesson 2"
-msgstr ""
+msgstr "Lliçó 2"
 
 #: mmm_modules/buddy_panel.py:49
 msgid "Buddy"
-msgstr ""
+msgstr "Company"
 
 #: mmm_modules/buddy_panel.py:55
 msgid "Status"
@@ -170,19 +135,19 @@ msgstr "Estat"
 
 #: mmm_modules/buddy_panel.py:62
 msgid "Play Time"
-msgstr ""
+msgstr "Temps de la partida"
 
 #: mmm_modules/buddy_panel.py:69
 msgid "Joined at"
-msgstr ""
+msgstr "S'ha unit a"
 
 #: mmm_modules/buddy_panel.py:101
 msgid "synchronizing"
-msgstr "sincronitzant"
+msgstr "S'està sincronitzant"
 
 #: mmm_modules/buddy_panel.py:115
 msgid "Playing"
-msgstr "S'està reproduint"
+msgstr "S'està jugant"
 
 #: mmm_modules/buddy_panel.py:115
 msgid "Paused"
@@ -194,7 +159,7 @@ msgstr "S'ha finalitzat"
 
 #: mmm_modules/buddy_panel.py:119
 msgid "Gave up"
-msgstr ""
+msgstr "S'ha rendit"
 
 #: mmm_modules/buddy_panel.py:121
 msgid "Unknown"
@@ -236,10 +201,7 @@ msgstr "Anglès (Gran Bretanya)"
 # 6SN9dk  <a href="http://cqiwfzsgztif.com/">cqiwfzsgztif</a>, [url=http://mqnplscuayhs.com/]mqnplscuayhs[/url], [link=http://vaofopuiyfpc.com/]vaofopuiyfpc[/link], http://tdwgjeysqgne.com/
 #: mmm_modules/i18n.py:43
 msgid "English - U.S."
-msgstr ""
-"6SN9dk  <a href=\"http://cqiwfzsgztif.com/\">cqiwfzsgztif</a>, "
-"[url=http://mqnplscuayhs.com/]mqnplscuayhs[/url], "
-"[link=http://vaofopuiyfpc.com/]vaofopuiyfpc[/link], http://tdwgjeysqgne.com/"
+msgstr "Anglès (Estats Units)"
 
 #: mmm_modules/i18n.py:44
 msgid "Finnish"
@@ -255,7 +217,7 @@ msgstr "Alemany"
 
 #: mmm_modules/i18n.py:47
 msgid "Hungarian"
-msgstr "Hungarès"
+msgstr "Hongarès"
 
 #: mmm_modules/i18n.py:48
 msgid "Italian"
@@ -311,4 +273,4 @@ msgstr "Escull una imatge"
 
 #: mmm_modules/image_category.py:235
 msgid "Not a valid image file"
-msgstr ""
+msgstr "No és un fitxer vàlid d'imatge"

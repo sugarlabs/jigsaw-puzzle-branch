@@ -275,8 +275,3 @@ msgstr "Ka takuy an t´ipláb"
 #: mmm_modules/image_category.py:235
 msgid "Not a valid image file"
 msgstr "Yáb alwa axe xi t´ipláb"
-
-#, python-format
-#, python-format,
-#~ msgid "Buddy '%s' changed status: %s"
-#~ msgstr "U juntal ´%s´ in jalk´uy in bichowil: %s"

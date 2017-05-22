@@ -2,273 +2,274 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-15 00:31-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2017-05-21 20:03+0000\n"
+"Last-Translator: Chris <cjl@sugarlabs.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: lt\n"
+"Language: ach\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.11.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1495396987.000000\n"
 
 #: activity/activity.info:2
 msgid "Jigsaw Puzzle"
-msgstr ""
+msgstr "Ka gwenyo wic me Jigsaw"
 
 #: JigsawPuzzleActivity.py:188
 #, python-format
 msgid "Buddy '%(buddy)s' changed status: %(status)s"
-msgstr ""
+msgstr "Dyera '%(buddy)s' alokaloka ikwo mere: %(status)s"
 
 #: JigsawPuzzleActivity.py:261
 #, python-format
 msgid "Buddy '%s' joined the game!"
-msgstr ""
+msgstr "Dyera '%s' odonyo ituku!"
 
 #: JigsawPuzzleActivity.py:265
 #, python-format
 msgid "Buddy '%s' left the game!"
-msgstr ""
+msgstr "Dyers '%s' oweko tuku!"
 
 #: JigsawPuzzleUI.py:215
 msgid "Solve"
-msgstr ""
+msgstr "Tyeki"
 
 #: JigsawPuzzleUI.py:219
 msgid "Shuffle"
-msgstr ""
+msgstr "Lok yie"
 
 #: JigsawPuzzleUI.py:223
 msgid "My Picture"
-msgstr ""
+msgstr "Cala"
 
 #: JigsawPuzzleUI.py:227
 msgid "Board Hint"
-msgstr ""
+msgstr "Kony ame Bod mio"
 
 #: JigsawPuzzleUI.py:271
 msgid "Time: "
-msgstr ""
+msgstr "Cawa: "
 
 #: JigsawPuzzleUI.py:280 JigsawPuzzleUI.py:510
 msgid "Lesson Plans"
-msgstr ""
+msgstr "Lecon Plan"
 
 #: JigsawPuzzleUI.py:316
 msgid "Select image and press Start Game..."
-msgstr ""
+msgstr "Yer cal eka ite diyo Cak Tuku..."
 
 #: JigsawPuzzleUI.py:320
 msgid "Waiting for Puzzle image to be chosen..."
-msgstr ""
+msgstr "The ka kuru yero Cal me gigwenyo wic..."
 
 #: JigsawPuzzleUI.py:322 JigsawPuzzleUI.py:368
 msgid "Buddies"
-msgstr ""
+msgstr "Dyere na"
 
 #: JigsawPuzzleUI.py:328
 msgid "Game Running"
-msgstr ""
+msgstr "Tuku tye ame awot anyim"
 
 #: JigsawPuzzleUI.py:358
 msgid "Start Game"
-msgstr ""
+msgstr "Cak Tuku"
 
 #: JigsawPuzzleUI.py:388
 msgid "Choose a Subject"
-msgstr ""
+msgstr "Yer Lok"
 
 #: JigsawPuzzleUI.py:441
 msgid "Puzzle Solved!"
-msgstr ""
+msgstr "Otyeko nwongo yore me Lagweny wic!"
 
 #: JigsawPuzzleUI.py:443
 msgid "Press Stop on the Toolbar to Exit Activity!"
-msgstr ""
+msgstr "Di Giki ikom Tulba wek iya oko Igin itimo!"
 
 #: JigsawPuzzleUI.py:478
 msgid "Jigsaw Puzzle Activity"
-msgstr ""
+msgstr "Gin atima me Lagweny wic me Jigsaw"
 
 #: JigsawPuzzleUI.py:513
 msgid "Close Lesson"
-msgstr ""
+msgstr "Cegi lecon"
 
 #: JigsawPuzzleUI.py:583
 msgid "Game Started!"
-msgstr ""
+msgstr "Tuku ocake!"
 
 #: JigsawPuzzleUI.py:585
 msgid "Waiting for Puzzle image to be transferred..."
-msgstr ""
+msgstr "Ikuru kobo cal me gigwenyo wic..."
 
 #: i18n_misc_strings.py:1
 msgid "Overview"
-msgstr ""
+msgstr "Imalomalo"
 
 #: i18n_misc_strings.py:2
 msgid "Lesson 3"
-msgstr ""
+msgstr "Lecon 3"
 
 #: i18n_misc_strings.py:3
 msgid "Lesson 1"
-msgstr ""
+msgstr "Lecon 1"
 
 #: i18n_misc_strings.py:4
 msgid "Lesson 2"
-msgstr ""
+msgstr "Lecon 2"
 
 #: mmm_modules/buddy_panel.py:49
 msgid "Buddy"
-msgstr ""
+msgstr "Dyera"
 
 #: mmm_modules/buddy_panel.py:55
 msgid "Status"
-msgstr ""
+msgstr "Kit atye kede"
 
 #: mmm_modules/buddy_panel.py:62
 msgid "Play Time"
-msgstr ""
+msgstr "Cawa me Tuku"
 
 #: mmm_modules/buddy_panel.py:69
 msgid "Joined at"
-msgstr ""
+msgstr "Odonyo iye ikom cawa"
 
 #: mmm_modules/buddy_panel.py:101
 msgid "synchronizing"
-msgstr ""
+msgstr "Nonoto"
 
 #: mmm_modules/buddy_panel.py:115
 msgid "Playing"
-msgstr ""
+msgstr "Tye ka tuku"
 
 #: mmm_modules/buddy_panel.py:115
 msgid "Paused"
-msgstr ""
+msgstr "Ocung oko"
 
 #: mmm_modules/buddy_panel.py:117
 msgid "Finished"
-msgstr ""
+msgstr "Otumu"
 
 #: mmm_modules/buddy_panel.py:119
 msgid "Gave up"
-msgstr ""
+msgstr "Oweku"
 
 #: mmm_modules/buddy_panel.py:121
 msgid "Unknown"
-msgstr ""
+msgstr "Pe ongeo"
 
 #: mmm_modules/buddy_panel.py:123
 #, python-format
 msgid "%i minutes"
-msgstr ""
+msgstr "%i dakike"
 
 #: mmm_modules/i18n.py:36
 msgid "Chinese (simplified)"
-msgstr ""
+msgstr "Chinese (anyangere)"
 
 #: mmm_modules/i18n.py:37
 msgid "Chinese (traditional)"
-msgstr ""
+msgstr "Chinese (acon me tekwaro)"
 
 #: mmm_modules/i18n.py:38
 msgid "Czech"
-msgstr ""
+msgstr "Czech"
 
 #: mmm_modules/i18n.py:39
 msgid "Danish"
-msgstr ""
+msgstr "Danish"
 
 #: mmm_modules/i18n.py:40
 msgid "Dutch"
-msgstr ""
+msgstr "Dutch"
 
 #: mmm_modules/i18n.py:41
 msgid "English"
-msgstr ""
+msgstr "Leb Muno"
 
 #: mmm_modules/i18n.py:42
 msgid "English - Great Britain"
-msgstr ""
+msgstr "Leb Munu - Great Britain"
 
 #: mmm_modules/i18n.py:43
 msgid "English - U.S."
-msgstr ""
+msgstr "Leb Munu - U.S."
 
 #: mmm_modules/i18n.py:44
 msgid "Finnish"
-msgstr ""
+msgstr "Finnic"
 
 #: mmm_modules/i18n.py:45
 msgid "French"
-msgstr ""
+msgstr "French"
 
 #: mmm_modules/i18n.py:46
 msgid "German"
-msgstr ""
+msgstr "German"
 
 #: mmm_modules/i18n.py:47
 msgid "Hungarian"
-msgstr ""
+msgstr "Hungarian"
 
 #: mmm_modules/i18n.py:48
 msgid "Italian"
-msgstr ""
+msgstr "Italian"
 
 #: mmm_modules/i18n.py:49
 msgid "Japanese"
-msgstr ""
+msgstr "Japanis"
 
 #: mmm_modules/i18n.py:50
 msgid "Korean"
-msgstr ""
+msgstr "Korean"
 
 #: mmm_modules/i18n.py:51
 msgid "Norwegian"
-msgstr ""
+msgstr "Norweigan"
 
 #: mmm_modules/i18n.py:52
 msgid "Polish"
-msgstr ""
+msgstr "Polish"
 
 #: mmm_modules/i18n.py:53
 msgid "Portuguese"
-msgstr ""
+msgstr "Portuguese"
 
 #: mmm_modules/i18n.py:54
 msgid "Portuguese - Brazilian"
-msgstr ""
+msgstr "Portuguese - Brazilian"
 
 #: mmm_modules/i18n.py:55
 msgid "Russian"
-msgstr ""
+msgstr "Russian"
 
 #: mmm_modules/i18n.py:56
 msgid "Slovak"
-msgstr ""
+msgstr "Slovak"
 
 #: mmm_modules/i18n.py:57
 msgid "Spanish"
-msgstr ""
+msgstr "Spanish"
 
 #: mmm_modules/i18n.py:58
 msgid "Swedish"
-msgstr ""
+msgstr "Swedic"
 
 #: mmm_modules/i18n.py:59
 msgid "Turkish"
-msgstr ""
+msgstr "Turkish"
 
 #: mmm_modules/image_category.py:219 mmm_modules/image_category.py:223
 msgid "Choose image"
-msgstr ""
+msgstr "Yer cal"
 
 #: mmm_modules/image_category.py:235
 msgid "Not a valid image file"
-msgstr ""
+msgstr "Pail me cal pe tye kakare"
