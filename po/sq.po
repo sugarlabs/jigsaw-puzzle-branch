@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-15 00:31-0500\n"
-"PO-Revision-Date: 2017-02-19 23:50+0000\n"
-"Last-Translator: Chris <cjl@sugarlabs.org>\n"
+"PO-Revision-Date: 2018-11-12 07:06+0000\n"
+"Last-Translator: Besnik_b <besnik@programeshqip.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: sq\n"
 "MIME-Version: 1.0\n"
@@ -16,11 +16,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.1.1\n"
-"X-POOTLE-MTIME: 1487548212.000000\n"
+"X-POOTLE-MTIME: 1542006373.000000\n"
 
 #: activity/activity.info:2
 msgid "Jigsaw Puzzle"
-msgstr ""
+msgstr "Jigsaw Puzzle"
 
 #: JigsawPuzzleActivity.py:188
 #, python-format
@@ -75,7 +75,7 @@ msgstr "Shokë"
 
 #: JigsawPuzzleUI.py:328
 msgid "Game Running"
-msgstr ""
+msgstr "Lojë Në Xhirim e Sipër"
 
 #: JigsawPuzzleUI.py:358
 msgid "Start Game"
@@ -95,7 +95,7 @@ msgstr "Shtypni Stop te Paneli që të Dilet nga Veprimtaria!"
 
 #: JigsawPuzzleUI.py:478
 msgid "Jigsaw Puzzle Activity"
-msgstr ""
+msgstr "Veprimtaria Jigsaw Puzzle"
 
 #: JigsawPuzzleUI.py:513
 msgid "Close Lesson"
@@ -139,11 +139,11 @@ msgstr "Kohë Loje"
 
 #: mmm_modules/buddy_panel.py:69
 msgid "Joined at"
-msgstr ""
+msgstr "Erdhi më"
 
 #: mmm_modules/buddy_panel.py:101
 msgid "synchronizing"
-msgstr ""
+msgstr "po njëkohësohet"
 
 #: mmm_modules/buddy_panel.py:115
 msgid "Playing"
@@ -151,7 +151,7 @@ msgstr "Po luhet"
 
 #: mmm_modules/buddy_panel.py:115
 msgid "Paused"
-msgstr "Pushuar"
+msgstr "E pushuar"
 
 #: mmm_modules/buddy_panel.py:117
 msgid "Finished"
@@ -200,7 +200,7 @@ msgstr "Anglisht - Mbretëria e Bashkuar"
 
 #: mmm_modules/i18n.py:43
 msgid "English - U.S."
-msgstr "Anglisht - ShBA"
+msgstr "Anglisht - Sh.B.A."
 
 #: mmm_modules/i18n.py:44
 msgid "Finnish"
@@ -232,7 +232,7 @@ msgstr "Koreançe"
 
 #: mmm_modules/i18n.py:51
 msgid "Norwegian"
-msgstr "Norvegjishte"
+msgstr "Norvegjisht"
 
 #: mmm_modules/i18n.py:52
 msgid "Polish"

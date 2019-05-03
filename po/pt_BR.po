@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-15 00:31-0500\n"
-"PO-Revision-Date: 2017-06-20 13:17+0000\n"
-"Last-Translator: Mariana <dias.inkscape@gmail.com>\n"
+"PO-Revision-Date: 2019-03-09 00:31+0000\n"
+"Last-Translator: Paulo Francisco <slomp@ufrgs.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Pootle 2.5.1.1\n"
-"X-POOTLE-MTIME: 1497964668.000000\n"
+"X-POOTLE-MTIME: 1552091507.000000\n"
 
 #: activity/activity.info:2
 msgid "Jigsaw Puzzle"
@@ -63,7 +63,7 @@ msgstr "Planos de Aula"
 
 #: JigsawPuzzleUI.py:316
 msgid "Select image and press Start Game..."
-msgstr "Selecione a imagem e aperte Iniciar Jogo..."
+msgstr "Selecione a imagem e pressione Iniciar Jogo..."
 
 #: JigsawPuzzleUI.py:320
 msgid "Waiting for Puzzle image to be chosen..."
@@ -83,7 +83,7 @@ msgstr "Iniciar Jogo"
 
 #: JigsawPuzzleUI.py:388
 msgid "Choose a Subject"
-msgstr "Escolha um Assunto"
+msgstr "Escolha um Tema"
 
 #: JigsawPuzzleUI.py:441
 msgid "Puzzle Solved!"
@@ -91,7 +91,7 @@ msgstr "Quebra-cabeça Resolvido!"
 
 #: JigsawPuzzleUI.py:443
 msgid "Press Stop on the Toolbar to Exit Activity!"
-msgstr "Aperte Parar na barra de ferramentas para Sair da Atividade!"
+msgstr "Aperte Parar na barra de ferramentas para sair da Atividade!"
 
 #: JigsawPuzzleUI.py:478
 msgid "Jigsaw Puzzle Activity"
@@ -200,11 +200,11 @@ msgstr "Inglês - Britânico"
 
 #: mmm_modules/i18n.py:43
 msgid "English - U.S."
-msgstr "Inglês - E.U.A"
+msgstr "Inglês - E.U.A."
 
 #: mmm_modules/i18n.py:44
 msgid "Finnish"
-msgstr "Fim"
+msgstr "Finlandês"
 
 #: mmm_modules/i18n.py:45
 msgid "French"
@@ -228,7 +228,7 @@ msgstr "Japonês"
 
 #: mmm_modules/i18n.py:50
 msgid "Korean"
-msgstr "Koreano"
+msgstr "Coreano"
 
 #: mmm_modules/i18n.py:51
 msgid "Norwegian"
@@ -244,7 +244,7 @@ msgstr "Português"
 
 #: mmm_modules/i18n.py:54
 msgid "Portuguese - Brazilian"
-msgstr "Português - Brasileiro"
+msgstr "Português Brasileiro"
 
 #: mmm_modules/i18n.py:55
 msgid "Russian"
