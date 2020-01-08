@@ -19,10 +19,19 @@
 #
 
 # init gthreads before using abiword
-import gobject
-gobject.threads_init()
+import gi
+gi.require_version('Pango', '1.0')
+gi.require_version('Gtk', '3.0')
+from gi.repository import GObject
 
-from sugar.activity.activity import Activity, ActivityToolbox, get_bundle_path
+from sugar3.activity.activity import Activity, get_bundle_path
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.activity.widgets import ActivityButton
+from sugar3.activity.widgets import TitleEntry
+from sugar3.activity.widgets import StopButton
+from sugar3.activity.widgets import ShareButton
+from sugar3.activity.widgets import DescriptionItem
+
 from gettext import gettext as _
 import logging, os, sys
 import time
@@ -31,18 +40,18 @@ from io import StringIO
 from mamamedia_modules import json
 
 from JigsawPuzzleUI import JigsawPuzzleUI
-from mamamedia_modules import TubeHelper
+# from mamamedia_modules import TubeHelper
 from mamamedia_modules import GAME_IDLE, GAME_STARTED, GAME_FINISHED, GAME_QUIT
 
 logger = logging.getLogger('jigsawpuzzle-activity')
 
-from dbus.service import method, signal
-from dbus.gobject_service import ExportedGObject
+# from dbus.service import method, signal
+# from dbus.gi_service import ExportedGObject
 
 SERVICE = "org.worldwideworkshop.olpc.JigsawPuzzle.Tube"
 IFACE = SERVICE
 PATH = "/org/worldwideworkshop/olpc/JigsawPuzzle/Tube"
-
+'''
 class GameTube (ExportedGObject):
     """ Manage the communication between cooperating activities """
     def __init__(self, tube, is_initiator, activity):
@@ -79,30 +88,37 @@ class GameTube (ExportedGObject):
         """Request that this player's Welcome method is called to bring it
         up to date with the game state.
         """
+        pass
 
     @signal(dbus_interface=IFACE, signature='s')
     def GameUpdate(self, game_state):
         """ When an image is chosen by the initiator, this method gets called."""
+        pass
 
     @signal(dbus_interface=IFACE, signature='su')
     def StatusUpdate (self, status, ellapsed_time):
         """ signal a reshufle, possibly with a new image """
-
+        pass
+    
     @signal(dbus_interface=IFACE, signature='')
     def RequestImage (self):
         """ Request that the game image be sent to us. """
+        pass
 
     @signal(dbus_interface=IFACE, signature='i')
     def PiecePicked (self, index):
         """ Signals a piece picked in the correct board position """
+        pass
         
     @signal(dbus_interface=IFACE, signature='i')
     def PiecePlaced (self, index):
         """ Signals a piece placed in the correct board position """
+        pass
         
     @signal(dbus_interface=IFACE, signature='i(dd)')
     def PieceDropped (self, index, position):
         """ Signals a piece that has been moved around and dropped """
+        pass
 
     ###############
     # Callbacks
@@ -220,8 +236,9 @@ class GameTube (ExportedGObject):
         self.activity.ui._thaw(state)
         self.activity.ui._send_status_update()
         
+'''
 
-class JigsawPuzzleActivity(Activity, TubeHelper):
+class JigsawPuzzleActivity(Activity):
     def __init__(self, handle):
         Activity.__init__(self, handle)
         logger.debug('Starting Jigsaw Puzzle activity... %s' % str(get_bundle_path()))
@@ -229,24 +246,49 @@ class JigsawPuzzleActivity(Activity, TubeHelper):
 
         self.connect('destroy', self._destroy_cb)
         
-        toolbox = ActivityToolbox(self)
-        self.set_toolbox(toolbox)
-        toolbox.show()
-
-    # Toolbar title size hack
-        title_widget = toolbox._activity_toolbar.title
-        title_widget.set_size_request(title_widget.get_layout().get_pixel_size()[0] + 30, -1)
-        
         self.ui = JigsawPuzzleUI(self)
         self.set_canvas(self.ui)
-
+        self.build_toolbar()
         self.show_all()
+        
+        # TubeHelper.__init__(self, tube_class=GameTube, service=SERVICE)
+    
+    def build_toolbar(self):
+        # toolbar with the new toolbar redesign
+        toolbar_box = ToolbarBox()
 
-        TubeHelper.__init__(self, tube_class=GameTube, service=SERVICE)
+        activity_button = ActivityButton(self)
+        toolbar_box.toolbar.insert(activity_button, 0)
+        activity_button.show()
 
+        title_entry = TitleEntry(self)
+        toolbar_box.toolbar.insert(title_entry, -1)
+        title_entry.show()
+
+        description_item = DescriptionItem(self)
+        toolbar_box.toolbar.insert(description_item, -1)
+        description_item.show()
+
+        share_button = ShareButton(self)
+        toolbar_box.toolbar.insert(share_button, -1)
+        share_button.show()
+
+        separator = Gtk.SeparatorToolItem()
+        separator.props.draw = False
+        separator.set_expand(True)
+        toolbar_box.toolbar.insert(separator, -1)
+        separator.show()
+
+        stop_button = StopButton(self)
+        toolbar_box.toolbar.insert(stop_button, -1)
+        stop_button.show()
+
+        self.set_toolbar_box(toolbar_box)
+        toolbar_box.show()
+        
     def _destroy_cb(self, data=None):
         return True
-
+    '''
     def new_tube_cb (self):
         self.ui.set_contest_mode(True)
 
@@ -263,7 +305,8 @@ class JigsawPuzzleActivity(Activity, TubeHelper):
     def buddy_left_cb (self, buddy):
         nick = self.ui.buddy_panel.remove_player(buddy)
         self.ui.set_message(_("Buddy '%s' left the game!") % (nick), frommesh=True)
-
+    '''
+    
     def read_file(self, file_path):
         f = open(file_path, 'r')
         try:

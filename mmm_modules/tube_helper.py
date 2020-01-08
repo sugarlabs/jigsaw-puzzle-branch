@@ -17,11 +17,11 @@
 # If you find this activity useful or end up using parts of it in one of your
 # own creations we would love to hear from you at info@WorldWideWorkshop.org !
 #
-
-import telepathy
+# FIXME Port to Collabwrapper
+from gi.repository import TelepathyGLib as telepathy
 #import telepathy.client
-from sugar.presence.tubeconn import TubeConnection
-from sugar.presence import presenceservice
+from sugar3.presence.tubeconn import TubeConnection
+from sugar3.presence import presenceservice
 #import dbus
 import logging
 logger = logging.getLogger('tube_helper')

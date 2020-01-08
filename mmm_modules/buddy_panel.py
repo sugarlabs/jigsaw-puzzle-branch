@@ -18,9 +18,7 @@
 # own creations we would love to hear from you at info@WorldWideWorkshop.org !
 #
 
-import pygtk
-pygtk.require('2.0')
-import gtk
+from gi.repository import Gtk
 
 import logging
 
@@ -31,43 +29,43 @@ from .tube_helper import GAME_IDLE, GAME_STARTED, GAME_FINISHED, GAME_QUIT
 BUDDYMODE_CONTEST = 0
 BUDDYMODE_COLLABORATION = 1
 
-class BuddyPanel (gtk.ScrolledWindow):
+class BuddyPanel (Gtk.ScrolledWindow):
     def __init__ (self, mode=BUDDYMODE_CONTEST):
         super(BuddyPanel, self).__init__()
-        self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        self.set_policy(Gtk.POLICY_AUTOMATIC, Gtk.POLICY_AUTOMATIC)
 
-        self.model = gtk.ListStore(str, str, str, str)
-        self.model.set_sort_column_id(0, gtk.SORT_ASCENDING)
-        self.treeview = gtk.TreeView()
+        self.model = Gtk.ListStore(str, str, str, str)
+        self.model.set_sort_column_id(0, Gtk.SORT_ASCENDING)
+        self.treeview = Gtk.TreeView()
 
-        #col = gtk.TreeViewColumn(_("Icon"))
-        #r = gtk.CellRendererText()
+        #col = Gtk.TreeViewColumn(_("Icon"))
+        #r = Gtk.CellRendererText()
         #col.pack_start(r, True)
         #col.set_attributes(r, stock_id=0)
         #self.treeview.append_column(col)
 
-        col = gtk.TreeViewColumn(_("Buddy"))
-        r = gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(_("Buddy"))
+        r = Gtk.CellRendererText()
         col.pack_start(r, True)
         col.set_attributes(r, text=0)
         self.treeview.append_column(col)
 
-        col = gtk.TreeViewColumn(_("Status"))
-        r = gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(_("Status"))
+        r = Gtk.CellRendererText()
         col.pack_start(r, True)
         col.set_attributes(r, text=1)
         self.treeview.append_column(col)
         col.set_visible(mode == BUDDYMODE_CONTEST)
 
-        col = gtk.TreeViewColumn(_("Play Time"))
-        r = gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(_("Play Time"))
+        r = Gtk.CellRendererText()
         col.pack_start(r, True)
         col.set_attributes(r, text=2)
         self.treeview.append_column(col)
         col.set_visible(mode == BUDDYMODE_CONTEST)
 
-        col = gtk.TreeViewColumn(_("Joined at"))
-        r = gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(_("Joined at"))
+        r = Gtk.CellRendererText()
         col.pack_start(r, True)
         col.set_attributes(r, text=3)
         self.treeview.append_column(col)

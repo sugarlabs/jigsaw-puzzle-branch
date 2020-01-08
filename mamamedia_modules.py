@@ -23,8 +23,8 @@ import sys
 
 cwd = os.path.split(__file__)[0]
 
-import gtk
-theme = gtk.icon_theme_get_default()
+from gi.repository import Gtk 
+theme = Gtk.IconTheme.get_default()
 
 if os.path.exists(os.path.join(cwd, 'mmm_modules')):
     # We are self contained

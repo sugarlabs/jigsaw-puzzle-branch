@@ -25,7 +25,7 @@ import os
 import gettext
 import locale
 
-import gtk, gobject
+from gi.repository import Gtk, GObject
 
 _ = lambda x: x
 
@@ -111,12 +111,12 @@ def list_available_translations (domain):
             pass
     return rv
 
-class LanguageComboBox (gtk.ComboBox):
+class LanguageComboBox (Gtk.ComboBox):
     def __init__ (self, domain):
-        liststore = gtk.ListStore(gobject.TYPE_STRING)
-        gtk.ComboBox.__init__(self, liststore)
+        liststore = Gtk.ListStore(GObject.TYPE_STRING)
+        Gtk.ComboBox.__init__(self, liststore)
 
-        self.cell = gtk.CellRendererText()
+        self.cell = Gtk.CellRendererText()
         self.pack_start(self.cell, True)
         self.add_attribute(self.cell, 'text', 0)
 
