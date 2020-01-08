@@ -160,7 +160,7 @@ def resize_image (pb, width=-1, height=-1, method=RESIZE_CUT):
 
 def trace (func):
     def wrapped (*args, **kwargs):
-        logging.debug("TRACE %s %s %s" % (func.func_name, args, kwargs))
+        logging.debug("TRACE %s %s %s" % (func.__name__, args, kwargs))
         return func(*args, **kwargs)
     return wrapped
 

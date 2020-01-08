@@ -156,8 +156,8 @@ class LanguageComboBox (gtk.ComboBox):
 ###
 def gather_other_translations ():
     from glob import glob
-    images = filter(lambda x: os.path.isdir(x), glob('images/*'))
-    images = map(lambda x: os.path.basename(x), images)
+    images = [x for x in glob('images/*') if os.path.isdir(x)]
+    images = [os.path.basename(x) for x in images]
     f = file('i18n_misc_strings.py', 'w')
     for e in images:
         f.write('_("%s")\n' % e)

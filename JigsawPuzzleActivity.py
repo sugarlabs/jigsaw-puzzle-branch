@@ -27,7 +27,7 @@ from gettext import gettext as _
 import logging, os, sys
 import time
 import zlib
-from cStringIO import StringIO
+from io import StringIO
 from mamamedia_modules import json
 
 from JigsawPuzzleUI import JigsawPuzzleUI

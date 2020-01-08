@@ -30,8 +30,8 @@ import md5
 from sugar import mime
 from sugar.graphics.objectchooser import ObjectChooser
 
-from borderframe import BorderFrame
-from utils import load_image, resize_image, RESIZE_CUT
+from .borderframe import BorderFrame
+from .utils import load_image, resize_image, RESIZE_CUT
 
 cwd = os.path.normpath(os.path.join(os.path.split(__file__)[0], '..'))
 
@@ -148,7 +148,7 @@ class CategoryDirectory (object):
             thumbs.extend(glob(os.path.join(self.path, "default_thumb.*")))
             thumbs.extend(glob(os.path.join(mmmpath, "mmm_images","default_thumb.*")))
             logging.debug(thumbs)
-            thumbs = filter(lambda x: os.path.exists(x), thumbs)
+            thumbs = [x for x in thumbs if os.path.exists(x)]
             thumbs.append(None)
         else:
             thumbs = [self.path]
@@ -202,7 +202,7 @@ class ImageSelectorWidget (gtk.Table):
         ir = gtk.Image()
         ir.set_from_pixbuf(load_image(os.path.join(iconpath,'arrow_right.png')))
         self.br.set_image(ir)
-        self.br.connect('clicked', self.next)
+        self.br.connect('clicked', self.__next__)
         self.attach(prepare_btn_cb(self.br), 3,4,1,2,0,0)
         self.attach(gtk.Label(),4,5,1,2)
         self.filename = None
@@ -357,7 +357,7 @@ class ImageSelectorWidget (gtk.Table):
             self.image.set_from_pixbuf(self.category.get_image(filename))
         else:
             if self.category.has_images():
-                self.next()
+                next(self)
 
     def load_image(self, filename, fromJournal=False):
         """ Loads an image from the file """
@@ -374,7 +374,7 @@ class ImageSelectorWidget (gtk.Table):
         #    self.image.set_from_pixbuf(self.category.get_image(filename))
         #else:
         self.category = CategoryDirectory(filename, self.width, self.height, method=self.method)
-        self.next()
+        next(self)
         self.cat_thumb.set_from_pixbuf(self.category.thumb)
         return self.image.get_pixbuf() is not None
 
@@ -436,7 +436,7 @@ class CategorySelector (gtk.ScrolledWindow):
     def get_pb (self, path):
         thumbs = glob(os.path.join(path, "thumb.*"))
         thumbs.extend(glob(os.path.join(self.path, "default_thumb.*")))
-        thumbs = filter(lambda x: os.path.exists(x), thumbs)
+        thumbs = [x for x in thumbs if os.path.exists(x)]
         thumbs.append(None)
         return load_image(thumbs[0], THUMB_SIZE, THUMB_SIZE)
 

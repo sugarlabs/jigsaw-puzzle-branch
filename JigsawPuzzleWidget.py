@@ -25,7 +25,7 @@ import random
 import os
 import logging
 import md5
-from cStringIO import StringIO
+from io import StringIO
 from mmm_modules import BorderFrame, utils
 
 MAGNET_POWER_PERCENT = 20
@@ -248,7 +248,7 @@ class CutBoard (object):
                 self.pieces[c].append(self.cut(c,r))
 
     def get_cutter (self):
-        for k,v in CUTTERS.items():
+        for k,v in list(CUTTERS.items()):
             if isinstance(self.cutter, v):
                 return k
         return None
@@ -423,7 +423,7 @@ class CutBoard (object):
     def _thaw (self, data):
         if data is None:
             return
-        if data.has_key('pb') and data['pb'] is not None:
+        if 'pb' in data and data['pb'] is not None:
             fn = os.tempnam() 
             f = file(fn, 'w+b')
             f.write(data['pb'])
@@ -529,7 +529,7 @@ class JigsawBoard (BorderFrame):
         bx, by, mx, my = self.board_distribution[index]
         self.board.move(piece, bx, by)
         self.board_distribution[index] = None
-        if len(filter(None, self.board_distribution))==0:
+        if len([_f for _f in self.board_distribution if _f])==0:
             for p in self.board.get_children():
                 if isinstance(p, JigsawPiece):
                     p.hide_wireframe()
@@ -552,7 +552,7 @@ class JigsawBoard (BorderFrame):
 
     def _thaw (self, data):
         for k in ('target_pieces_per_line', ):
-            if data.has_key(k):
+            if k in data:
                 setattr(self, k, data[k])
         self.cutboard._thaw(data['cutboard'])
             
@@ -712,7 +712,7 @@ class JigsawPuzzleWidget (gtk.EventBox):
                 'piece_pos': [x[1] for x in pieces]}
 
     def _thaw (self, data):
-        if data.has_key('board'):
+        if 'board' in data:
             self.board._thaw(data['board'])
         self.set_cutter(data.get('cutter', None))
         self.set_target_pieces_per_line(data.get('target_pieces_per_line', None))

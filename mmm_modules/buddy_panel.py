@@ -24,7 +24,7 @@ import gtk
 
 import logging
 
-from tube_helper import GAME_IDLE, GAME_STARTED, GAME_FINISHED, GAME_QUIT
+from .tube_helper import GAME_IDLE, GAME_STARTED, GAME_FINISHED, GAME_QUIT
 
 #from sugar.graphics.icon import CanvasIcon
 
