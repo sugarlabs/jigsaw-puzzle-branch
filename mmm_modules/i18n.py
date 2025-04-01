@@ -24,13 +24,17 @@
 import os
 import gettext
 import locale
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import GObject
 
-import gtk, gobject
 
-_ = lambda x: x
+def _(x): return x
 
-# Images were taken from http://www.sodipodi.com/ 
+# Images were taken from http://www.sodipodi.com/
 # except for korea taken from http://zh.wikipedia.org/wiki/Image:Unification_flag_of_Korea.svg
+
 
 lang_name_mapping = {
     'zh_cn':(None, _('Chinese (simplified)'), 'china'),
@@ -70,7 +74,7 @@ class LangDetails (object):
     def guess_translation (self, fallback=False):
         try:
             self.gnutranslation = gettext.translation(self.domain, 'locale',
-                    languages=[self.code], fallback=fallback)
+                                                      languages=[self.code], fallback=fallback)
             return True
         except:
             return False
@@ -95,7 +99,7 @@ def get_lang_details (lang, domain):
         return LangDetails(lang, mapping[1], mapping[2], domain)
     return LangDetails(lang, mapping[0], mapping[2], domain)
 
-def list_available_translations (domain):
+def list_available_translations(domain):
     rv = [get_lang_details('en', domain)]
     rv[0].guess_translation(True)
     if not os.path.isdir('locale'):
@@ -111,12 +115,13 @@ def list_available_translations (domain):
             pass
     return rv
 
-class LanguageComboBox (gtk.ComboBox):
-    def __init__ (self, domain):
-        liststore = gtk.ListStore(gobject.TYPE_STRING)
-        gtk.ComboBox.__init__(self, liststore)
+class LanguageComboBox (Gtk.ComboBox):
+    def __init__(self, domain):
+        liststore = Gtk.ListStore(GObject.TYPE_STRING)
+        Gtk.ComboBox.__init__(self)
 
-        self.cell = gtk.CellRendererText()
+        self.set_model(liststore)
+        self.cell = Gtk.CellRendererText()
         self.pack_start(self.cell, True)
         self.add_attribute(self.cell, 'text', 0)
 
@@ -125,11 +130,11 @@ class LanguageComboBox (gtk.ComboBox):
             liststore.insert(i+1, (gettext.gettext(x.name), ))
         self.connect('changed', self.install)
 
-    def modify_bg (self, state, color):
+    def modify_bg(self, state, color):
         setattr(self.cell, 'background-gdk',color)
         setattr(self.cell, 'background-set',True)
 
-    def install (self, *args):
+    def install(self, *args):
         if self.get_active() > -1:
             self.translations[self.get_active()].install()
         else:
@@ -156,10 +161,13 @@ class LanguageComboBox (gtk.ComboBox):
 ###
 def gather_other_translations ():
     from glob import glob
-    images = filter(lambda x: os.path.isdir(x), glob('images/*'))
-    images = map(lambda x: os.path.basename(x), images)
+    lessons = [x for x in glob('lessons/*') if os.path.isdir(x)]
+    lessons = [os.path.basename(x) for x in lessons]
+    lessons = [x[0].isdigit() and x[1:] or x for x in lessons]
+    images = [x for x in glob('images/*') if os.path.isdir(x)]
+    images = [os.path.basename(x) for x in images]
     f = file('i18n_misc_strings.py', 'w')
-    for e in images:
+    for e in images + lessons:
         f.write('_("%s")\n' % e)
     f.close()
 
