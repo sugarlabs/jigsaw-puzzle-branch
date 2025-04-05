@@ -19,20 +19,33 @@
 #
 
 # init gthreads before using abiword
-import gobject
-gobject.threads_init()
-
-from sugar.activity.activity import Activity, ActivityToolbox, get_bundle_path
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import GObject
+GObject.threads_init()
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
+from sugar3.activity.activity import Activity, get_bundle_path
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.activity.widgets import ActivityToolbarButton, StopButton
+from sugar3.graphics.toolbarbox import ToolbarButton
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.graphics.toggletoolbutton import ToggleToolButton
 from gettext import gettext as _
-import logging, os, sys
+import logging
+import os
+import sys
 import time
 import zlib
-from cStringIO import StringIO
+from io import StringIO
 from mamamedia_modules import json
 
 from JigsawPuzzleUI import JigsawPuzzleUI
 from mamamedia_modules import TubeHelper
 from mamamedia_modules import GAME_IDLE, GAME_STARTED, GAME_FINISHED, GAME_QUIT
+import logging
+_logger = logging.getLogger('jigsawpuzzle-activity')
 
 logger = logging.getLogger('jigsawpuzzle-activity')
 
@@ -118,7 +131,8 @@ class GameTube (ExportedGObject):
 #           f = {}
 #       else:
 #           f = self.activity.ui._freeze(journal=False)
-        self.tube.get_object(sender, PATH).Welcome(self.activity.ui.get_game_state()[1], dbus_interface=IFACE)
+        self.tube.get_object(sender, PATH).Welcome(
+                 f.freeze(), dbus_interface=IFACE)
 
     def add_game_update_handler (self):
         self.tube.add_signal_receiver(self.game_update_cb, 'GameUpdate', IFACE,
@@ -142,8 +156,9 @@ class GameTube (ExportedGObject):
         t = time.time()
         compressed = zlib.compress(img, 9)
         # We will be sending the image, 24K at a time (my tests put the high water at 48K)
-        logger.debug("was %d, is %d. compressed to %d%% in %0.4f seconds" % (len(img), len(compressed), len(compressed)*100/len(img), time.time() - t))
-        part_size = 24*1024
+        logger.debug("was %d, is %d. compressed to %d%% in %0.4f seconds" % (
+             len(img), len(compressed), len(compressed) * 100 / len(img), time.time() - t))
+        part_size = 24 * 1024
         parts = len(compressed) / part_size
         for i in range(parts+1):
             self.tube.get_object(sender, PATH).ImageSync(compressed[i*part_size:(i+1)*part_size], i+1,
@@ -185,9 +200,9 @@ class GameTube (ExportedGObject):
         nick, stat = self.activity.ui.buddy_panel.update_player(buddy, status, True, int(join_time))
         if buddy != self.activity.owner:
             self.activity.ui.set_message(
-                    _("Buddy '%(buddy)s' changed status: %(status)s") % \
-                        {'buddy': nick, 'status': stat},
-                    frommesh=True)
+                _("Buddy '%(buddy)s' changed status: %(status)s") % \
+                {'buddy': nick, 'status': stat},
+                frommesh=True)
     
     ##############
     # Methods
@@ -229,17 +244,28 @@ class JigsawPuzzleActivity(Activity, TubeHelper):
 
         self.connect('destroy', self._destroy_cb)
         
-        toolbox = ActivityToolbox(self)
-        self.set_toolbox(toolbox)
-        toolbox.show()
-
-    # Toolbar title size hack
-        title_widget = toolbox._activity_toolbar.title
-        title_widget.set_size_request(title_widget.get_layout().get_pixel_size()[0] + 30, -1)
+        self._sample_window = None
+        self.fixed = Gtk.Fixed()
         
         self.ui = JigsawPuzzleUI(self)
+        toolbar_box = ToolbarBox()
+        self.set_toolbar_box(toolbar_box)
+        toolbar_box.show()
+        activity_button = ActivityToolbarButton(self)
+        toolbar_box.toolbar.insert(activity_button, -1)
+        activity_button.show()
+ 
+        separator = Gtk.SeparatorToolItem()
+        separator.props.draw = False
+        separator.set_expand(True)
+        toolbar_box.toolbar.insert(separator, -1)
+        separator.show()
+ 
+        stop_button = StopButton(self)
+        toolbar_box.toolbar.insert(stop_button, -1)
+        stop_button.show()
         self.set_canvas(self.ui)
-
+        self.fixed.show()
         self.show_all()
 
         TubeHelper.__init__(self, tube_class=GameTube, service=SERVICE)
