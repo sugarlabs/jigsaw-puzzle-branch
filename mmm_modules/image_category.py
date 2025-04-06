@@ -216,27 +216,21 @@ class ImageSelectorWidget (Gtk.Table):
     def add_image (self, *args):#widget=None, response=None, *args):
         """ Use to trigger and process the My Own Image selector. """
 
-        if hasattr(mime, 'GENERIC_TYPE_IMAGE'):
-            chooser = ObjectChooser(_('Choose image'), self._parent,
-                                    Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT,
-                                    what_filter=mime.GENERIC_TYPE_IMAGE)
-        else:
-            chooser = ObjectChooser(_('Choose image'), self._parent,
-                                    Gtk.DIALOG_MODAL | Gtk.DIALOG_DESTROY_WITH_PARENT)
+        chooser = ObjectChooser(
+            _('Choose image'),
+            self._parent,
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT)
 
         try:
             result = chooser.run()
-            if result == Gtk.RESPONSE_ACCEPT:
+            if result == Gtk.ResponseType.ACCEPT:
                 jobject = chooser.get_selected_object()
                 if jobject and jobject.file_path:
-                    if self.load_image(str(jobject.file_path), True):
-                        pass
-                    else:
-                        err = Gtk.MessageDialog(self._parent, Gtk.DIALOG_MODAL, Gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
+                    if not self.load_image(str(jobject.file_path), True):
+                        err = Gtk.MessageDialog(self._parent, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,
                                                 _("Not a valid image file"))
                         err.run()
                         err.destroy()
-                        return
         finally:
             chooser.destroy()
             del chooser
@@ -430,7 +424,7 @@ class CategorySelector (Gtk.ScrolledWindow):
     def grab_focus (self):
         self.treeview.grab_focus()
 
-    def cell_pb (self, tvcolumn, cell, model, it):
+    def cell_pb (self, tvcolumn, cell, model, it, data):
         # Renders a pixbuf stored in the thumbs cache
         cell.set_property('pixbuf', self.thumbs[model.get_value(it, 2)])
 

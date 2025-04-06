@@ -21,26 +21,31 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, GObject, Pango, GdkPixbuf, Gdk
+from gi.repository import GLib
+from gi.repository import GdkPixbuf
 
 import random
 import os
 import logging
 import md5
+import cairo
 from cStringIO import StringIO
 from mmm_modules import BorderFrame, utils
 
 MAGNET_POWER_PERCENT = 20
 CUTTERS = {}
 
-def create_pixmap (w, h):
-    cm = Gdk.colormap_get_system()
-    pm = Gdk.Pixmap(None, w, h, cm.get_visual().depth)
-    gc = pm.new_gc()
-    gc.set_colormap(Gdk.colormap_get_system())
-    color = cm.alloc_color('white')
-    gc.set_foreground(color)
-    pm.draw_rectangle(gc, True, 0, 0, w, h)
-    return pm
+def create_surface(w, h):
+    """Create a white image surface of given width and height."""
+    surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
+    cr = cairo.Context(surface)
+
+    # Fill with white
+    cr.set_source_rgb(1, 1, 1)
+    cr.rectangle(0, 0, w, h)
+    cr.fill()
+
+    return surface
 
 class JigsawPiece (Gtk.EventBox):
     __gsignals__ = {'picked' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),
@@ -239,8 +244,8 @@ class CutBoard (object):
         else:
             self.v_connector_hints = [random.random()*2-1 for x in range((self.rows+1)*(self.cols+1))]
         self.width, self.height = self.pb.get_width(), self.pb.get_height()
-        self.pm = create_pixmap(self.width, self.height)
-        self.cr = self.pm.cairo_create()
+        self.pm = create_surface(self.width, self.height)
+        self.cr = cairo.Context(self.pm)
         self.pieces = []
         self.prepare_hint()
         for c in range(self.cols):
@@ -259,7 +264,7 @@ class CutBoard (object):
             self.cutter = CUTTERS.get(cutter, CutterClassic)()
 
     def prepare_hint (self):
-        self.hint_pm = create_pixmap(self.width, self.height)
+        self.hint_pm = create_surface(self.width, self.height)
         self.hint_cr = self.hint_pm.cairo_create()
         self.hint_cr.set_source_rgb (0,0,0)
         self.hint_cr.set_line_width(0.5)
@@ -611,12 +616,13 @@ class JigsawPuzzleWidget (Gtk.EventBox):
         return self.board.target_pieces_per_line
 
     def prepare_image (self, pixbuf=None, reshuffle=True):
-        x,y,w,h = self.get_allocation()
+        alloc = self.get_allocation()
+        x, y, w, h = alloc.x, alloc.y, alloc.width, alloc.height
         if pixbuf is not None:
             factor = min((float(w)*0.6)/pixbuf.get_width(), (float(h)*0.6)/pixbuf.get_height())
             pixbuf = pixbuf.scale_simple(int(pixbuf.get_width() * factor),
                                          int(pixbuf.get_height()*factor),
-                                         Gdk.INTERP_BILINEAR)
+                                         GdkPixbuf.InterpType.BILINEAR)
         if pixbuf is None:
             pixbuf = self.board.cutboard.pb
         if pixbuf is None:
@@ -628,7 +634,11 @@ class JigsawPuzzleWidget (Gtk.EventBox):
                 self._container.remove(child)
         bx, by = self._container.child_get(self.board, 'x', 'y')
         bw, bh = self.board.inner.get_size_request()
-        br = Gdk.Rectangle(bx,by,bw,bh)
+        br = Gdk.Rectangle()
+        br.x = bx
+        br.y = by
+        br.width = bw
+        br.height = bh
         for n, piece in enumerate(self.board.get_pieces(reshuffle)):
             if self.forced_location and len(self.forced_location)>n:
                 if self.forced_location[n] is None:
@@ -724,8 +734,13 @@ if __name__ == '__main__':
     j = JigsawPuzzleWidget()
     img = utils.load_image('test_image.gif')
     
-    j.prepare_image(img)
+    def setup_puzzle():
+        j.prepare_image(img)
+        return False
     
     w.add(j)
+    w.connect("destroy", Gtk.main_quit)
     w.show_all()
+
+    GLib.idle_add(setup_puzzle)
     Gtk.main()

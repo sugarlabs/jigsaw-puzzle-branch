@@ -254,6 +254,39 @@ class JigsawPuzzleActivity(Activity, TubeHelper):
         activity_button = ActivityToolbarButton(self)
         toolbar_box.toolbar.insert(activity_button, -1)
         activity_button.show()
+
+        self.btn_basic_cut = ToolButton('cut_basic')
+        self.btn_basic_cut.set_tooltip(_('Basic Cut'))
+        self.btn_basic_cut.connect('clicked', self.ui.set_piece_cut, 'basic')
+        toolbar_box.toolbar.insert(self.btn_basic_cut, -1)
+
+        self.btn_simple_cut = ToolButton('cut_simple')
+        self.btn_simple_cut.set_tooltip(_('Simple Cut'))
+        self.btn_simple_cut.connect('clicked', self.ui.set_piece_cut, 'simple')
+        toolbar_box.toolbar.insert(self.btn_simple_cut, -1)
+
+        self.btn_classic_cut = ToolButton('cut_classic')
+        self.btn_classic_cut.set_tooltip(_('Classic Cut'))
+        self.btn_classic_cut.connect('clicked', self.ui.set_piece_cut, 'classic')
+        toolbar_box.toolbar.insert(self.btn_classic_cut, -1)
+
+        separator = Gtk.SeparatorToolItem()
+        toolbar_box.toolbar.insert(separator, -1)
+
+        self.btn_easy_level = ToolButton('level_easy')
+        self.btn_easy_level.set_tooltip(_('Easy'))
+        self.btn_easy_level.connect('clicked', self.ui.set_level, 3)
+        toolbar_box.toolbar.insert(self.btn_easy_level, -1)
+
+        self.btn_normal_level = ToolButton('level_normal')
+        self.btn_normal_level.set_tooltip(_('Normal'))
+        self.btn_normal_level.connect('clicked', self.ui.set_level, 5)
+        toolbar_box.toolbar.insert(self.btn_normal_level, -1)
+
+        self.btn_hard_level = ToolButton('level_hard')
+        self.btn_hard_level.set_tooltip(_('Hard'))
+        self.btn_hard_level.connect('clicked', self.ui.set_level, 8)
+        toolbar_box.toolbar.insert(self.btn_hard_level, -1)
  
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
