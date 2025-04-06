@@ -131,10 +131,9 @@ class JigsawPuzzleUI (BorderFrame):
         scrolled.props.hscrollbar_policy = Gtk.PolicyType.NEVER
         scrolled.props.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC
         scrolled.show()
-        scrolled.add(control_panel_box)
-        rgba = Gdk.RGBA()
-        rgba.parse(COLOR_BG_CONTROLS)
-        scrolled.override_background_color(Gtk.StateFlags.NORMAL, rgba)
+        scrolled.add_with_viewport(control_panel_box)
+        scrolled.get_child().modify_bg(Gtk.StateType.NORMAL, Gdk.color_parse(COLOR_BG_CONTROLS))
+        control_panel.add(scrolled)
 
         spacer = Gtk.Label()
         spacer.set_size_request(-1, 5)
@@ -263,7 +262,7 @@ class JigsawPuzzleUI (BorderFrame):
         vbox.pack_start(lang_combo, True, True, 8)
         hbox.pack_start(vbox, True, True, 8)
         lang_box.add(hbox)
-
+        inner_table.attach(lang_box, 0,1,1,2,Gtk.AttachOptions.FILL, Gtk.AttachOptions.FILL)
 
         timer_box = BorderFrame(border=BORDER_ALL_BUT_LEFT,
                                 bg_color=COLOR_BG_CONTROLS,
@@ -395,9 +394,9 @@ class JigsawPuzzleUI (BorderFrame):
         if not self.game.get_parent():
             self.game_box.pop()
             while Gtk.events_pending():
-                Gtk.main_iteration(False)
-        c = Gtk.gdk.Cursor(Gtk.gdk.WATCH)
-        self.window.set_cursor(c)
+                Gtk.main_iteration()
+        c = Gdk.Cursor.new(Gdk.CursorType.WATCH)
+        self.get_window().set_cursor(c)
         if not self.game.prepare_image(pixbuf, reshuffle):
             self._shuffling = False
             return
