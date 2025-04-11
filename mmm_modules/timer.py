@@ -44,7 +44,7 @@ else:
         mmmpath = cwd
     iconpath = os.path.join(mmmpath, 'icons')
 
-from utils import load_image
+from .utils import load_image
 
 class TimerWidget (Gtk.HBox):
     __gsignals__ = {'timer_toggle': (
