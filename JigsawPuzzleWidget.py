@@ -27,9 +27,9 @@ from gi.repository import GdkPixbuf
 import random
 import os
 import logging
-import md5
+import hashlib
 import cairo
-from cStringIO import StringIO
+from io import StringIO, BytesIO
 from mmm_modules import BorderFrame, utils
 
 MAGNET_POWER_PERCENT = 20
@@ -47,10 +47,10 @@ def create_surface(w, h):
 
     return surface
 
-class JigsawPiece (Gtk.EventBox):
-    __gsignals__ = {'picked' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),
-                    'moved' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (int, int)),
-                    'dropped' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),}
+class JigsawPiece(Gtk.EventBox):
+    __gsignals__ = {'picked' : (GObject.SignalFlags.RUN_LAST, GObject.TYPE_NONE, ()),
+                    'moved' : (GObject.SignalFlags.RUN_LAST, GObject.TYPE_NONE, (int, int)),
+                    'dropped' : (GObject.SignalFlags.RUN_LAST, GObject.TYPE_NONE, ())}
     
     def __init__ (self):
         super(JigsawPiece, self).__init__()
@@ -78,7 +78,7 @@ class JigsawPiece (Gtk.EventBox):
         self.l_evids.append(self.connect('button-press-event', self._press_cb))
         self.l_evids.append(self.connect('button-release-event', self._release_cb))
         self.l_evids.append(self.connect('motion-notify-event', self._motion_cb))
-        self.connect('expose-event', self._expose_cb)
+        self.connect('draw', self._draw_cb)
 
     def set_index (self, index):
         self.index = index
@@ -108,29 +108,37 @@ class JigsawPiece (Gtk.EventBox):
         self.image.show()
 
     def get_position (self):
-        # The position relative to the puzzle playing area
-        if self.parent and self.parent.window:
-            bx,by = self.parent.window.get_origin()
-            px,py = self.window.get_origin()
-            self.last_coords = (px-bx,py-by)
+        parent = self.get_parent()
+        if parent and parent.get_window():
+            origin_parent = parent.get_window().get_origin()
+            origin_self = self.get_window().get_origin()
+            self.last_coords = (origin_self[0] - origin_parent[0],
+                                origin_self[1] - origin_parent[1])
         return self.last_coords
 
     def set_position (self, x, y):
-        # The new position, relative to the piece parent
-        self.parent.move(self, x, y)
+        parent = self.get_parent()
+        if parent:
+            parent.move(self, x, y)
 
-    def bring_to_top (self):
-        p = self.get_parent()
-        self.unparent()
-        self.set_parent(p)
+    def bring_to_top(self):
+        parent = self.get_parent()
+        if parent:
+            parent.remove(self)
+            parent.put(self, *self.get_position())
+            self.show()
 
     def _press_cb (self, w, e, *attrs):
         self.press_coords = e.get_coords()
-        self.root_coords = w.window.get_origin()
+        self.root_coords = w.get_window().get_origin()
         self.emit('picked')
         
     def _motion_cb (self, w, e, *args):
-        nx, ny = w.root_coords
+        coords = w.root_coords
+        if len(coords) >= 2:
+            nx, ny = coords[0], coords[1]
+        else:
+            nx, ny = 0, 0
         rx, ry = e.get_root_coords()
         px, py = w.press_coords
         delta = (rx-nx-px, ry-ny-py)
@@ -139,11 +147,14 @@ class JigsawPiece (Gtk.EventBox):
 
     def _release_cb (self, w, e, *args):
         self.emit('dropped')
-        # The actual position in the whole window is w.window.get_origin()
+        # The actual position in the whole window is w.get_window().get_origin()
 
-    def _expose_cb (self, *args):
+    def _draw_cb (self, *args):
         if self.shape is not None:
-            self.window.shape_combine_mask(self.shape, 0, 0)
+            window = self.get_window()
+            if window:
+                region = Gdk.cairo_region_create_from_surface(self.shape)
+                window.shape_combine_region(region, 0, 0)
 
 
 class CutterBasic (object):
@@ -254,7 +265,7 @@ class CutBoard (object):
                 self.pieces[c].append(self.cut(c,r))
 
     def get_cutter (self):
-        for k,v in CUTTERS.items():
+        for k,v in list(CUTTERS.items()):
             if isinstance(self.cutter, v):
                 return k
         return None
@@ -265,19 +276,20 @@ class CutBoard (object):
 
     def prepare_hint (self):
         self.hint_pm = create_surface(self.width, self.height)
-        self.hint_cr = self.hint_pm.cairo_create()
+        self.hint_cr = cairo.Context(self.hint_pm)
         self.hint_cr.set_source_rgb (0,0,0)
         self.hint_cr.set_line_width(0.5)
 
     def refresh (self):
-        self.cr.set_source_pixbuf(self.pb, 0, 0)
-        self.cr.paint()
-        self.cr.set_line_width(1.0)
-        self.cr.set_source_rgb(0,0,0)
+        if self.cr and self.pb:
+            Gdk.cairo_set_source_pixbuf(self.cr, self.pb, 0, 0)
+            self.cr.paint()
+            self.cr.set_line_width(1.0)
+            self.cr.set_source_rgb(0,0,0)
 
     def get_hint (self):
-        pb = Gdk.Pixbuf(Gdk.COLORSPACE_RGB, True, 8, self.width, self.height)
-        pb.get_from_drawable(self.hint_pm, self.pm.get_colormap(), 0, 0, 0, 0, self.width, self.height)
+        # self.hint_pm must be a cairo.Surface
+        pb = Gdk.pixbuf_get_from_surface(self.hint_pm, 0, 0, self.width, self.height)
         return pb
 
     def draw_vertical_path (self, cairo_ctx, piece_nr, col, height, ptype=0):
@@ -364,8 +376,8 @@ class CutBoard (object):
         width = int(width)
         height = int(height)
         # Prepare the piece mask
-        mask = Gdk.Pixmap(None, width+width_offset, height+height_offset, 1)
-        mask_cr = mask.cairo_create()
+        mask = cairo.ImageSurface(cairo.FORMAT_A1, width + width_offset, height + height_offset)
+        mask_cr = cairo.Context(mask)
         mask_cr.save()
         mask_cr.set_operator(cairo.OPERATOR_SOURCE)
         mask_cr.set_source_rgba(0,0,0,0)
@@ -385,24 +397,26 @@ class CutBoard (object):
 
         # The piece image
         self.refresh()
-        pb = Gdk.Pixbuf(Gdk.COLORSPACE_RGB, True, 8, width, height)
-        pb.get_from_drawable(self.pm, self.pm.get_colormap(), px, py, 0, 0, width, height)
+        pb = Gdk.pixbuf_get_from_surface(self.pm, int(px), int(py), int(width), int(height))
 
-        # The outlined image
-        self.cr.move_to(px+offsets['left'], py+offsets['top'])
-        self.path_for_piece(self.cr, x, y, width-width_offset, height-height_offset)
-        self.cr.stroke()
-        pb_wf = Gdk.Pixbuf(Gdk.COLORSPACE_RGB, True, 8, width, height)
-        pb_wf.get_from_drawable(self.pm, self.pm.get_colormap(), px, py, 0, 0, width, height)
+        # Outlined image: we don't use get_from_drawable anymore
+        # Instead, duplicate the pixbuf if needed
+        pb_wf = pb.copy()  # Just make a working copy for drawing outlines if needed
 
         return (pb, pb_wf, mask, px, py, width-width_offset, height-height_offset)
 
     def get_image_as_png (self, cb=None):
         rv = None
         if cb is None:
-            rv = StringIO()
+            rv = BytesIO()
             cb = rv.write
-        self.pb.save_to_callback(cb, "png")
+        try:
+            data, _ = self.pb.save_to_bufferv("png", [], [])
+            cb(data)
+        except Exception as e:
+            logging.error(f"Failed to save pixbuf: {e}")
+            return None
+
         if rv is not None:
             return rv.getvalue()
         else:
@@ -411,7 +425,7 @@ class CutBoard (object):
     def _freeze (self, img_cksum_only=False):
         if self.pb is not None:
             if img_cksum_only:
-                cksum = md5.new()
+                cksum = hashlib.md5()
                 self.get_image_as_png(cksum.update)
                 return {'geom': (self.cols, self.rows),
                         'hints': (self.h_connector_hints, self.v_connector_hints),
@@ -429,7 +443,7 @@ class CutBoard (object):
     def _thaw (self, data):
         if data is None:
             return
-        if data.has_key('pb') and data['pb'] is not None:
+        if 'pb' in data and data['pb'] is not None:
             fn = os.tempnam() 
             f = file(fn, 'w+b')
             f.write(data['pb'])
@@ -449,7 +463,7 @@ class CutBoard (object):
 class JigsawBoard (BorderFrame):
     """ Drop area for jigsaw pieces to be tested against.
     Maybe use this to do the piece cutting / hint ? """
-    __gsignals__ = {'solved' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),
+    __gsignals__ = {'solved' : (GObject.SignalFlags.RUN_LAST, GObject.TYPE_NONE, ()),
                     }
     def __init__ (self):
         super(JigsawBoard, self).__init__(border_color="#0000FF")
@@ -535,7 +549,7 @@ class JigsawBoard (BorderFrame):
         bx, by, mx, my = self.board_distribution[index]
         self.board.move(piece, bx, by)
         self.board_distribution[index] = None
-        if len(filter(None, self.board_distribution))==0:
+        if len([_f for _f in self.board_distribution if _f])==0:
             for p in self.board.get_children():
                 if isinstance(p, JigsawPiece):
                     p.hide_wireframe()
@@ -558,17 +572,17 @@ class JigsawBoard (BorderFrame):
 
     def _thaw (self, data):
         for k in ('target_pieces_per_line', ):
-            if data.has_key(k):
+            if k in data:
                 setattr(self, k, data[k])
         self.cutboard._thaw(data['cutboard'])
             
 
 class JigsawPuzzleWidget (Gtk.EventBox):
     __gsignals__ = {
-        'picked' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (JigsawPiece,)),
-        'dropped' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (JigsawPiece,bool)),
-        'solved' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),
-        'cutter-changed' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (str, int)),
+        'picked' : (GObject.SignalFlags.RUN_LAST, GObject.TYPE_NONE, (JigsawPiece,)),
+        'dropped' : (GObject.SignalFlags.RUN_LAST, GObject.TYPE_NONE, (JigsawPiece,bool)),
+        'solved' : (GObject.SignalFlags.RUN_LAST, GObject.TYPE_NONE, ()),
+        'cutter-changed' : (GObject.SignalFlags.RUN_LAST, GObject.TYPE_NONE, (str, int)),
         }
     def __init__ (self):
         super(JigsawPuzzleWidget, self).__init__()
@@ -651,9 +665,10 @@ class JigsawPuzzleWidget (Gtk.EventBox):
                 r = Gdk.Rectangle(bx,by,pw,ph)
                 r.x = int(random.random()*(w-pw))
                 r.y = int(random.random()*(h-ph))
-                if br.intersect(r).width > 0:
-                    r.x = int(random.random()*(w-pw))
-                    r.y = int(random.random()*(h-ph))
+                success, inter = br.intersect(r)
+                if success and inter.width > 0:
+                    r.x = int(random.random() * (w - pw))
+                    r.y = int(random.random() * (h - ph))
                 self._container.put(piece, r.x, r.y)
             piece.connect('picked', self._pick_cb)
             piece.connect('moved', self._move_cb)
@@ -661,7 +676,7 @@ class JigsawPuzzleWidget (Gtk.EventBox):
             if self.forced_location and len(self.forced_location)>n and self.forced_location[n] is None:
                 self.board.place_piece(piece)
             while Gtk.events_pending():
-                Gtk.main_iteration(False)
+                Gtk.main_iteration()
             piece.get_position()
         self.forced_location = None
         self.running = True
@@ -691,8 +706,10 @@ class JigsawPuzzleWidget (Gtk.EventBox):
         wa = w.get_allocation()
         ca = self._container.get_allocation()
 
-        if wx+x > 0 and wy+y > 0 and wx+wa[2]+x <= ca[2] \
-                and wy+wa[3]+y <= ca[3]:
+        w_width, w_height = wa.width, wa.height
+        c_width, c_height = ca.width, ca.height
+        if wx+x > 0 and wy+y > 0 and wx+w_width+x <= c_width \
+                and wy+w_height+y <= c_height:
             #logging.debug("moving %i,%i : %i:%i : %i:%i" % (wx,wy, x, y,wx+x, wy+y))
             self._container.move(w, max(0,wx+x), max(0,wy+y))
 
@@ -700,12 +717,13 @@ class JigsawPuzzleWidget (Gtk.EventBox):
         if w.get_parent() != self._container:
             return
         self.bring_to_top(w)
-        x,y,a,b = w.get_allocation()
+        alloc = w.get_allocation()
+        x,y,a,b = alloc.x, alloc.y, alloc.width, alloc.height
         c,d = w.get_size_request()
         logging.debug("Dropped Widget allocation: %s %s %s %s %s %s" % (x,y,a,b,c,d))
         if w.intersect(self.board.get_allocation()):
-            wx,wy,ww,wh = w.get_allocation()
-            bx,by,bw,bh = self.board.get_allocation()
+            wx,wy,ww,wh = w.get_allocation().x, w.get_allocation().y, w.get_allocation().width, w.get_allocation().height
+            bx,by,bw,bh = self.board.get_allocation().x, self.board.get_allocation().y, self.board.get_allocation().width, self.board.get_allocation().height
             self.board.drop_piece(w, wx-bx, wy-by)
         self.emit('dropped', w, from_mesh)
         
@@ -723,7 +741,7 @@ class JigsawPuzzleWidget (Gtk.EventBox):
                 'piece_pos': [x[1] for x in pieces]}
 
     def _thaw (self, data):
-        if data.has_key('board'):
+        if 'board' in data:
             self.board._thaw(data['board'])
         self.set_cutter(data.get('cutter', None))
         self.set_target_pieces_per_line(data.get('target_pieces_per_line', None))
