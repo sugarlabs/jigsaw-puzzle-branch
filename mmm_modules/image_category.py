@@ -26,13 +26,13 @@ from gi.repository import GObject
 import os
 from glob import glob
 import logging
-import md5
+import hashlib
 
 from sugar3 import mime
 from sugar3.graphics.objectchooser import ObjectChooser
 
-from borderframe import BorderFrame
-from utils import load_image, resize_image, RESIZE_CUT
+from .borderframe import BorderFrame
+from .utils import load_image, resize_image, RESIZE_CUT
 
 cwd = os.path.normpath(os.path.join(os.path.split(__file__)[0], '..'))
 
@@ -149,7 +149,7 @@ class CategoryDirectory (object):
             thumbs.extend(glob(os.path.join(self.path, "default_thumb.*")))
             thumbs.extend(glob(os.path.join(mmmpath, "mmm_images","default_thumb.*")))
             logging.debug(thumbs)
-            thumbs = filter(lambda x: os.path.exists(x), thumbs)
+            thumbs = [x for x in thumbs if os.path.exists(x)]
             thumbs.append(None)
         else:
             thumbs = [self.path]
@@ -431,7 +431,7 @@ class CategorySelector (Gtk.ScrolledWindow):
     def get_pb (self, path):
         thumbs = glob(os.path.join(path, "thumb.*"))
         thumbs.extend(glob(os.path.join(self.path, "default_thumb.*")))
-        thumbs = filter(lambda x: os.path.exists(x), thumbs)
+        thumbs = [x for x in thumbs if os.path.exists(x)]
         thumbs.append(None)
         return load_image(thumbs[0], THUMB_SIZE, THUMB_SIZE)
 
