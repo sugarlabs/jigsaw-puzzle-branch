@@ -164,7 +164,7 @@ class JigsawPuzzleUI (BorderFrame):
             'simple': self.btn_simple_cut,
             'classic': self.btn_classic_cut,
             }
-        for k,v in self.btn_cut_mapping.items():
+        for k,v in list(self.btn_cut_mapping.items()):
             v.connect("released", self.set_piece_cut, k)
 
         btn_box.attach(prepare_btn(self.btn_classic_cut), 3,4,0,1,0,0)
@@ -190,7 +190,7 @@ class JigsawPuzzleUI (BorderFrame):
             5: self.btn_normal_level,
             8: self.btn_hard_level,
             }
-        for k,v in self.btn_level_mapping.items():
+        for k,v in list(self.btn_level_mapping.items()):
             v.connect("released", self.set_level, k)
 
         btn_box.attach(prepare_btn(self.btn_hard_level), 3,4,1,2,0,0)
@@ -322,7 +322,7 @@ class JigsawPuzzleUI (BorderFrame):
         self.set_button_translation(self.btn_shuffle, "Game Running")
         self.btn_shuffle.get_child().set_label(_("Game Running"))
         self.btn_shuffle.set_sensitive(False)
-        for b in self.btn_cut_mapping.values() + self.btn_level_mapping.values():
+        for b in list(self.btn_cut_mapping.values()) + list(self.btn_level_mapping.values()):
             if not (b.get_active() and self.is_initiator()):
                 b.set_sensitive(False)
         self._readonly = True
@@ -396,12 +396,15 @@ class JigsawPuzzleUI (BorderFrame):
             while Gtk.events_pending():
                 Gtk.main_iteration()
         c = Gdk.Cursor.new(Gdk.CursorType.WATCH)
-        self.get_window().set_cursor(c)
+        win = self.get_window()
+        if win:
+            win.set_cursor(c)
         if not self.game.prepare_image(pixbuf, reshuffle):
             self._shuffling = False
             return
         self._shuffling = False
-        self.window.set_cursor(None)
+        if win:
+            win.set_cursor(None)
         #self.game.randomize()
 
     def do_shuffle (self, o, *args):
@@ -489,13 +492,13 @@ class JigsawPuzzleUI (BorderFrame):
 
     def cutter_change_cb (self, o, cutter, tppl):
         # tppl = target pieces per line
-        for c,b in self.btn_cut_mapping.items():
+        for c,b in list(self.btn_cut_mapping.items()):
             if c == cutter:
                 b.set_sensitive(True)
                 b.set_active(True)
             else:
                 b.set_active(False)
-        for c,b in self.btn_level_mapping.items():
+        for c,b in list(self.btn_level_mapping.items()):
             if c == tppl:
                 b.set_sensitive(True)
                 b.set_active(True)
@@ -516,7 +519,7 @@ class JigsawPuzzleUI (BorderFrame):
             self._send_pick_notification (piece)
 
     def piece_drop_cb (self, o, piece, from_mesh=False):
-        if self._parent._shared_activity and not from_mesh:
+        if self._parent.shared_activity and not from_mesh:
             self._send_drop_notification (piece)
 
     def _freeze (self, journal=True):
@@ -532,20 +535,20 @@ class JigsawPuzzleUI (BorderFrame):
     def _thaw (self, data):
         self.timer.reset()
         for k in ('thumb', 'timer', 'game'):
-            if data.has_key(k):
+            if k in data:
                 logging.debug('_thaw data for %s: %s' % (k, data))
                 getattr(self, k)._thaw(data[k])
-        if data.has_key('game'):# and not data.has_key('thumb'):
+        if 'game' in data:# and not data.has_key('thumb'):
             self.thumb.load_pb(self.game.board.cutboard.pb)
-        if data.has_key('timer'):
+        if 'timer' in data:
             self._join_time = self.timer.ellapsed()
-        if data.has_key('game') and data['game']['piece_pos']:
+        if 'game' in data and data['game']['piece_pos']:
             self._show_game(reshuffle=False)
 
     @utils.trace
     def _send_status_update (self):
         """ Send a status update signal """
-        if self._parent._shared_activity:
+        if self._parent.shared_activity:
             if self.get_game_state() == GAME_STARTED:
                 if self.thumb.has_image():
                     self.set_message(_("Game Started!"))
@@ -556,14 +559,14 @@ class JigsawPuzzleUI (BorderFrame):
     @utils.trace
     def _send_game_update (self):
         """ A puzzle was selected, share it """
-        if self._parent._shared_activity:
+        if self._parent.shared_activity:
             # TODO: Send image 
             self._parent.game_tube.GameUpdate(self._state[1])
 
     @utils.trace
     def _send_pick_notification (self, piece):
         """ """
-        if self._parent._shared_activity:
+        if self._parent.shared_activity:
             self._parent.game_tube.PiecePicked(piece.get_index())
 
     @utils.trace

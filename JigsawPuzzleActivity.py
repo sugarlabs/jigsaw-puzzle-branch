@@ -50,7 +50,7 @@ _logger = logging.getLogger('jigsawpuzzle-activity')
 logger = logging.getLogger('jigsawpuzzle-activity')
 
 from dbus.service import method, signal
-from dbus.gobject_service import ExportedGObject
+from dbus.service import Object as ExportedGObject
 
 SERVICE = "org.worldwideworkshop.olpc.JigsawPuzzle.Tube"
 IFACE = SERVICE
