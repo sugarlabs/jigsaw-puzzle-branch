@@ -219,7 +219,8 @@ class ImageSelectorWidget (Gtk.Table):
         chooser = ObjectChooser(
             _('Choose image'),
             self._parent,
-            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT)
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            filter_type='Image')
 
         try:
             result = chooser.run()

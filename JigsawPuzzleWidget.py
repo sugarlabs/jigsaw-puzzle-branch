@@ -29,21 +29,24 @@ import os
 import logging
 import hashlib
 import cairo
+import tempfile
 from io import StringIO, BytesIO
 from mmm_modules import BorderFrame, utils
 
 MAGNET_POWER_PERCENT = 20
 CUTTERS = {}
 
-def create_surface(w, h):
-    """Create a white image surface of given width and height."""
+def create_surface(w, h, source_pixbuf=None):
+    """Create a  image surface of given width and height."""
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
     cr = cairo.Context(surface)
-
-    # Fill with white
-    cr.set_source_rgb(1, 1, 1)
-    cr.rectangle(0, 0, w, h)
-    cr.fill()
+    if source_pixbuf:
+        Gdk.cairo_set_source_pixbuf(cr, source_pixbuf, 0, 0)
+        cr.paint()
+    else:
+        cr.set_source_rgb(1, 1, 1)
+        cr.rectangle(0, 0, w, h)
+        cr.fill()
 
     return surface
 
@@ -108,20 +111,21 @@ class JigsawPiece(Gtk.EventBox):
         self.image.show()
 
     def get_position (self):
+        # The position relative to the puzzle playing area
         parent = self.get_parent()
         if parent and parent.get_window():
-            origin_parent = parent.get_window().get_origin()
-            origin_self = self.get_window().get_origin()
-            self.last_coords = (origin_self[0] - origin_parent[0],
-                                origin_self[1] - origin_parent[1])
+            bx,by = parent.get_window().get_origin()[:2]
+            px,py = self.get_window().get_origin()[:2]
+            self.last_coords = (px-bx,py-by)
         return self.last_coords
 
     def set_position (self, x, y):
+        # The new position, relative to the piece parent
         parent = self.get_parent()
         if parent:
             parent.move(self, x, y)
 
-    def bring_to_top(self):
+    def bring_to_top (self):
         parent = self.get_parent()
         if parent:
             parent.remove(self)
@@ -255,7 +259,7 @@ class CutBoard (object):
         else:
             self.v_connector_hints = [random.random()*2-1 for x in range((self.rows+1)*(self.cols+1))]
         self.width, self.height = self.pb.get_width(), self.pb.get_height()
-        self.pm = create_surface(self.width, self.height)
+        self.pm = create_surface(self.width, self.height, self.pb)
         self.cr = cairo.Context(self.pm)
         self.pieces = []
         self.prepare_hint()
@@ -390,37 +394,54 @@ class CutBoard (object):
         mask_cr.stroke_preserve()
         mask_cr.fill()
 
-        width += width_offset
-        height += height_offset
-        px -= int(offsets['left'])
-        py -= int(offsets['top'])
+        crop_x = int(px - offsets['left'])
+        crop_y = int(py - offsets['top'])
+        full_width = width + width_offset
+        full_height = height + height_offset
 
-        # The piece image
+        piece_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, full_width, full_height)
+        piece_cr = cairo.Context(piece_surface)
+        piece_cr.set_source_surface(self.pm, -crop_x, -crop_y)
+        piece_cr.paint()
+        piece_cr.set_operator(cairo.OPERATOR_DEST_IN)
+        piece_cr.set_source_surface(mask, 0, 0)
+        piece_cr.paint()
+
         self.refresh()
-        pb = Gdk.pixbuf_get_from_surface(self.pm, int(px), int(py), int(width), int(height))
+        pb = Gdk.pixbuf_get_from_surface(piece_surface, 0, 0, full_width, full_height)
 
-        # Outlined image: we don't use get_from_drawable anymore
-        # Instead, duplicate the pixbuf if needed
-        pb_wf = pb.copy()  # Just make a working copy for drawing outlines if needed
+        outlined_surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, full_width, full_height)
+        outlined_cr = cairo.Context(outlined_surface)
+        outlined_cr.set_source_surface(self.pm, -crop_x, -crop_y)
+        outlined_cr.paint()
+        outlined_cr.set_operator(cairo.OPERATOR_DEST_IN)
+        outlined_cr.set_source_surface(mask, 0, 0)
+        outlined_cr.paint()
+        outlined_cr.set_operator(cairo.OPERATOR_OVER)
+        outlined_cr.set_line_width(1.0)
+        outlined_cr.set_source_rgb(0, 0, 0)
+        outlined_cr.translate(offsets['left'], offsets['top'])
+        outlined_cr.move_to(0, 0)
+        self.path_for_piece(outlined_cr, x, y, width, height)
+        outlined_cr.stroke()
 
-        return (pb, pb_wf, mask, px, py, width-width_offset, height-height_offset)
+        pb_wf = Gdk.pixbuf_get_from_surface(outlined_surface, 0, 0, full_width, full_height)
+
+        return (pb, pb_wf, mask, crop_x, crop_y, width, height)
 
     def get_image_as_png (self, cb=None):
-        rv = None
-        if cb is None:
-            rv = BytesIO()
-            cb = rv.write
+        if self.pb is None:
+            return None
         try:
-            data, _ = self.pb.save_to_bufferv("png", [], [])
-            cb(data)
+            with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+                tmp_file_name = tmp_file.name
+                self.pb.savev(tmp_file_name, "png", [], [])
+                pb_s = GdkPixbuf.Pixbuf.new_from_file(tmp_file_name).to_string()
+                return pb_s
         except Exception as e:
-            logging.error(f"Failed to save pixbuf: {e}")
+            logging.error(f"Failed to save or read pixbuf: {e}")
             return None
 
-        if rv is not None:
-            return rv.getvalue()
-        else:
-            return True
 
     def _freeze (self, img_cksum_only=False):
         if self.pb is not None:
