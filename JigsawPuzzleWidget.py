@@ -138,15 +138,11 @@ class JigsawPiece(Gtk.EventBox):
         self.emit('picked')
         
     def _motion_cb (self, w, e, *args):
-        coords = w.root_coords
-        if len(coords) >= 2:
-            nx, ny = coords[0], coords[1]
-        else:
-            nx, ny = 0, 0
+        nx, ny = self.root_coords[:2]
         rx, ry = e.get_root_coords()
-        px, py = w.press_coords
+        px, py = self.press_coords
         delta = (rx-nx-px, ry-ny-py)
-        w.root_coords = (nx+delta[0], ny+delta[1])
+        self.root_coords = (nx+delta[0], ny+delta[1])
         self.emit('moved', *delta)
 
     def _release_cb (self, w, e, *args):
