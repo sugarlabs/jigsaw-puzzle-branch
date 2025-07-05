@@ -18,20 +18,21 @@
 # own creations we would love to hear from you at info@WorldWideWorkshop.org !
 #
 
-import pygtk
-pygtk.require('2.0')
-import gtk, gobject
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from gi.repository import GObject
 
 import os
 from glob import glob
 import logging
-import md5
+import hashlib
 
-from sugar import mime
-from sugar.graphics.objectchooser import ObjectChooser
+from sugar3 import mime
+from sugar3.graphics.objectchooser import ObjectChooser
 
-from borderframe import BorderFrame
-from utils import load_image, resize_image, RESIZE_CUT
+from .borderframe import BorderFrame
+from .utils import load_image, resize_image, RESIZE_CUT
 
 cwd = os.path.normpath(os.path.join(os.path.split(__file__)[0], '..'))
 
@@ -148,7 +149,7 @@ class CategoryDirectory (object):
             thumbs.extend(glob(os.path.join(self.path, "default_thumb.*")))
             thumbs.extend(glob(os.path.join(mmmpath, "mmm_images","default_thumb.*")))
             logging.debug(thumbs)
-            thumbs = filter(lambda x: os.path.exists(x), thumbs)
+            thumbs = [x for x in thumbs if os.path.exists(x)]
             thumbs.append(None)
         else:
             thumbs = [self.path]
@@ -156,9 +157,9 @@ class CategoryDirectory (object):
         return load_image(thumbs[0], self.twidth, self.theight)
     
 
-class ImageSelectorWidget (gtk.Table):
-    __gsignals__ = {'category_press' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ()),
-                    'image_press' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, ()),}
+class ImageSelectorWidget (Gtk.Table):
+    __gsignals__ = {'category_press' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),
+                    'image_press' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, ()),}
 
     def __init__ (self,
                   width=IMAGE_SIZE,
@@ -168,12 +169,12 @@ class ImageSelectorWidget (gtk.Table):
                   method=RESIZE_CUT,
                   image_dir=None,
                   parent=None):
-        gtk.Table.__init__(self, 2,5,False)
+        Gtk.Table.__init__(self, 2,5,False)
         self._parent = parent
         self._signals = []
         self.width = width
         self.height = height
-        self.image = gtk.Image()
+        self.image = Gtk.Image()
         self.method = method
         #self.set_myownpath(MYOWNPIC_FOLDER)
         img_box = BorderFrame(border_color=frame_color)
@@ -181,30 +182,30 @@ class ImageSelectorWidget (gtk.Table):
         img_box.set_border_width(5)
         self._signals.append((img_box, img_box.connect('button_press_event', self.emit_image_pressed)))
         self.attach(img_box, 0,5,0,1,0,0)
-        self.attach(gtk.Label(), 0,1,1,2)
-        self.bl = gtk.Button()
+        self.attach(Gtk.Label(), 0,1,1,2)
+        self.bl = Gtk.Button()
 
-        il = gtk.Image()
+        il = Gtk.Image()
         il.set_from_pixbuf(load_image(os.path.join(iconpath, 'arrow_left.png')))
         self.bl.set_image(il)
 
         self.bl.connect('clicked', self.previous)
         self.attach(prepare_btn_cb(self.bl), 1,2,1,2,0,0)
 
-        cteb = gtk.EventBox()
-        self.cat_thumb = gtk.Image()
+        cteb = Gtk.EventBox()
+        self.cat_thumb = Gtk.Image()
         self.cat_thumb.set_size_request(THUMB_SIZE, THUMB_SIZE)
         cteb.add(self.cat_thumb)
         self._signals.append((cteb, cteb.connect('button_press_event', self.emit_cat_pressed)))
         self.attach(cteb, 2,3,1,2,0,0,xpadding=10)
         
-        self.br = gtk.Button()
-        ir = gtk.Image()
+        self.br = Gtk.Button()
+        ir = Gtk.Image()
         ir.set_from_pixbuf(load_image(os.path.join(iconpath,'arrow_right.png')))
         self.br.set_image(ir)
         self.br.connect('clicked', self.next)
         self.attach(prepare_btn_cb(self.br), 3,4,1,2,0,0)
-        self.attach(gtk.Label(),4,5,1,2)
+        self.attach(Gtk.Label(),4,5,1,2)
         self.filename = None
         self.show_all()
         self.image.set_size_request(width, height)
@@ -215,27 +216,22 @@ class ImageSelectorWidget (gtk.Table):
     def add_image (self, *args):#widget=None, response=None, *args):
         """ Use to trigger and process the My Own Image selector. """
 
-        if hasattr(mime, 'GENERIC_TYPE_IMAGE'):
-            chooser = ObjectChooser(_('Choose image'), self._parent,
-                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                    what_filter=mime.GENERIC_TYPE_IMAGE)
-        else:
-            chooser = ObjectChooser(_('Choose image'), self._parent,
-                                    gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT)
+        chooser = ObjectChooser(
+            _('Choose image'),
+            self._parent,
+            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            filter_type='Image')
 
         try:
             result = chooser.run()
-            if result == gtk.RESPONSE_ACCEPT:
+            if result == Gtk.ResponseType.ACCEPT:
                 jobject = chooser.get_selected_object()
                 if jobject and jobject.file_path:
-                    if self.load_image(str(jobject.file_path), True):
-                        pass
-                    else:
-                        err = gtk.MessageDialog(self._parent, gtk.DIALOG_MODAL, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK,
+                    if not self.load_image(str(jobject.file_path), True):
+                        err = Gtk.MessageDialog(self._parent, Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.OK,
                                                 _("Not a valid image file"))
                         err.run()
                         err.destroy()
-                        return
         finally:
             chooser.destroy()
             del chooser
@@ -396,12 +392,12 @@ class ImageSelectorWidget (gtk.Table):
         self.set_image_dir(obj.get('image_dir', None))
         self.image.set_from_pixbuf(self.category.get_image(obj.get('filename', None)))
 
-class CategorySelector (gtk.ScrolledWindow):
-    __gsignals__ = {'selected' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, (str,))}
+class CategorySelector (Gtk.ScrolledWindow):
+    __gsignals__ = {'selected' : (GObject.SIGNAL_RUN_LAST, GObject.TYPE_NONE, (str,))}
     
     def __init__ (self, title=None, selected_category_path=None, path=None, extra=()):
-        gtk.ScrolledWindow.__init__ (self)
-        self.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        Gtk.ScrolledWindow.__init__ (self)
+        self.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
         if path is None:
             path = os.path.join(mmmpath, 'mmm_images')
         self.path = path
@@ -409,10 +405,10 @@ class CategorySelector (gtk.ScrolledWindow):
         model, selected = self.get_model(path, selected_category_path, extra)
         self.ignore_first = selected is not None
         
-        self.treeview = gtk.TreeView()
-        col = gtk.TreeViewColumn(title)
-        r1 = gtk.CellRendererPixbuf()
-        r2 = gtk.CellRendererText()
+        self.treeview = Gtk.TreeView()
+        col = Gtk.TreeViewColumn(title)
+        r1 = Gtk.CellRendererPixbuf()
+        r2 = Gtk.CellRendererText()
         col.pack_start(r1, False)
         col.pack_start(r2, True)
         col.set_cell_data_func(r1, self.cell_pb)
@@ -429,22 +425,22 @@ class CategorySelector (gtk.ScrolledWindow):
     def grab_focus (self):
         self.treeview.grab_focus()
 
-    def cell_pb (self, tvcolumn, cell, model, it):
+    def cell_pb (self, tvcolumn, cell, model, it, data):
         # Renders a pixbuf stored in the thumbs cache
         cell.set_property('pixbuf', self.thumbs[model.get_value(it, 2)])
 
     def get_pb (self, path):
         thumbs = glob(os.path.join(path, "thumb.*"))
         thumbs.extend(glob(os.path.join(self.path, "default_thumb.*")))
-        thumbs = filter(lambda x: os.path.exists(x), thumbs)
+        thumbs = [x for x in thumbs if os.path.exists(x)]
         thumbs.append(None)
         return load_image(thumbs[0], THUMB_SIZE, THUMB_SIZE)
 
     def get_model (self, path, selected_path, extra):
         # Each row is (path/dirname, pretty name, 0 based index)
         selected = None
-        store = gtk.ListStore(str, str, int)
-        store.set_sort_column_id(1, gtk.SORT_ASCENDING)
+        store = Gtk.ListStore(str, str, int)
+        store.set_sort_column_id(1, Gtk.SortType.ASCENDING)
         files = [os.path.join(path, x) for x in os.listdir(path) if not x.startswith('.')]
         files.extend(extra)
         for fullpath, prettyname in [(x, _(os.path.basename(x))) for x in files if os.path.isdir(x)]:

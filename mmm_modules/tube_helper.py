@@ -18,10 +18,12 @@
 # own creations we would love to hear from you at info@WorldWideWorkshop.org !
 #
 
-import telepathy
-#import telepathy.client
-from sugar.presence.tubeconn import TubeConnection
-from sugar.presence import presenceservice
+import gi
+gi.require_version("TelepathyGLib", "0.12")
+from gi.repository import TelepathyGLib
+
+from sugar3.presence.tubeconn import TubeConnection
+from sugar3.presence import presenceservice
 #import dbus
 import logging
 logger = logging.getLogger('tube_helper')
@@ -43,13 +45,13 @@ class TubeHelper (object):
         #bus = dbus.Bus()
 
 
-        name, path = self.pservice.get_preferred_connection()
+        name, path = self.pservice.get_preferred_connection() or (None, None)
         self.tp_conn_name = name
         self.tp_conn_path = path
         #self.conn = telepathy.client.Connection(name, path)
         self.game_tube = False
         self.initiating = None
-        
+
 
         # Buddy object for you
         owner = self.pservice.get_owner()
@@ -84,8 +86,9 @@ class TubeHelper (object):
         self.tubes_chan = self._shared_activity.telepathy_tubes_chan
         self.text_chan = self._shared_activity.telepathy_text_chan
 
-        self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal('NewTube',
-            self._new_tube_cb)
+        self.tubes_chan[
+            TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES].connect_to_signal('NewTube',
+                                                                     self._new_tube_cb)
 
         self._shared_activity.connect('buddy-joined', self._buddy_joined_cb)
         self._shared_activity.connect('buddy-left', self._buddy_left_cb)
@@ -96,7 +99,7 @@ class TubeHelper (object):
         self._sharing_setup()
 
         logger.debug('This is my activity: making a tube...')
-        id = self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].OfferDBusTube(
+        id = self.tubes_chan[TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES].OfferDBusTube(
             self.service, {})
         self.shared_cb()
 
@@ -194,7 +197,7 @@ class TubeHelper (object):
         self._sharing_setup()
 
         logger.debug('This is not my activity: waiting for a tube...')
-        self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
+        self.tubes_chan[TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES].ListTubes(
             reply_handler=self._list_tubes_reply_cb,
             error_handler=self._list_tubes_error_cb)
 
@@ -207,38 +210,41 @@ class TubeHelper (object):
                      'params=%r state=%d', id, initiator, type, service,
                      params, state)
 
-        if (type == telepathy.TUBE_TYPE_DBUS and
-            service == self.service):
-            if state == telepathy.TUBE_STATE_LOCAL_PENDING:
-                self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].AcceptDBusTube(id)
+        if (type == TelepathyGLib.TubeType.DBUS and
+                service == self.service):
+            if state == TelepathyGLib.TubeState.LOCAL_PENDING:
+                self.tubes_chan[TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES].AcceptDBusTube(
+                    id)
 
             self.tube_conn = TubeConnection(self.conn,
-                self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES],
-                id, group_iface=self.text_chan[telepathy.CHANNEL_INTERFACE_GROUP])
+                                            self.tubes_chan[TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES],
+                                            id, group_iface=self.text_chan[TelepathyGLib.IFACE_CHANNEL_INTERFACE_GROUP])
 
             
             logger.debug("creating game tube")
-            self.game_tube = self.tube_class(self.tube_conn, self.initiating, self)
+            self.game_tube = self.tube_class(
+                self.tube_conn, self.initiating, self)
 
         self.new_tube_cb()
 
-    def get_bus_name (self):
-        return self.tube_conn.participants.get(self.tubes_chan[telepathy.CHANNEL_INTERFACE_GROUP].GetSelfHandle(), None)
+    def get_bus_name(self):
+        return self.tube_conn.participants.get(
+            self.tubes_chan[TelepathyGLib.IFACE_CHANNEL_INTERFACE_GROUP].GetSelfHandle(), None)
         
-    def new_tube_cb (self):
+    def new_tube_cb(self):
         """ override this """
         pass
 
     def _get_buddy(self, cs_handle):
         """Get a Buddy from a channel specific handle."""
         logger.debug('Trying to find owner of handle %u...', cs_handle)
-        group = self.text_chan[telepathy.CHANNEL_INTERFACE_GROUP]
+        group = self.text_chan[TelepathyGLib.IFACE_CHANNEL_INTERFACE_GROUP]
         my_csh = group.GetSelfHandle()
         logger.debug('My handle in that group is %u', my_csh)
         if my_csh == cs_handle:
             handle = self.conn.GetSelfHandle()
             logger.debug('CS handle %u belongs to me, %u', cs_handle, handle)
-        elif group.GetGroupFlags() & telepathy.CHANNEL_GROUP_FLAG_CHANNEL_SPECIFIC_HANDLES:
+        elif group.GetGroupFlags() & TelepathyGLib.ChannelGroupFlags.CHANNEL_SPECIFIC_HANDLES:
             handle = group.GetHandleOwners([cs_handle])[0]
             logger.debug('CS handle %u belongs to %u', cs_handle, handle)
         else:
@@ -247,7 +253,7 @@ class TubeHelper (object):
             # XXX: deal with failure to get the handle owner
             assert handle != 0
         return self.pservice.get_buddy_by_telepathy_handle(self.tp_conn_name,
-                self.tp_conn_path, handle)
+                                                           self.tp_conn_path, handle)
 
     def _buddy_joined_cb (self, activity, buddy):
         logger.debug('Buddy %s joined' % buddy.props.nick)
