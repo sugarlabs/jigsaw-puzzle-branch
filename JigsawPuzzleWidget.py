@@ -133,17 +133,19 @@ class JigsawPiece(Gtk.EventBox):
             self.show()
 
     def _press_cb (self, w, e, *attrs):
-        self.press_coords = e.get_coords()
-        self.root_coords = w.get_window().get_origin()
+        self.root_coords = e.get_root_coords()
         self.emit('picked')
         
     def _motion_cb (self, w, e, *args):
-        nx, ny = self.root_coords[:2]
-        rx, ry = e.get_root_coords()
-        px, py = self.press_coords
-        delta = (rx-nx-px, ry-ny-py)
-        self.root_coords = (nx+delta[0], ny+delta[1])
-        self.emit('moved', *delta)
+        curr_root_x, curr_root_y = e.get_root_coords()
+        init_root_x, init_root_y = self.root_coords
+        press_x, press_y = self.press_coords
+        # Calculate relative movement
+        dx = curr_root_x - init_root_x
+        dy = curr_root_y - init_root_y
+        
+        self.emit('moved', dx, dy)
+        self.root_coords = (curr_root_x, curr_root_y)
 
     def _release_cb (self, w, e, *args):
         self.emit('dropped')
