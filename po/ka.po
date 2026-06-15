@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-07 17:44+1000\n"
-"PO-Revision-Date: 2026-06-15 03:03+0000\n"
+"PO-Revision-Date: 2026-06-15 07:48+0000\n"
 "Last-Translator: NF <rkavt@smartprojects.ge>\n"
 "Language-Team: Georgian <http://weblate.sugarlabs.org/projects/"
 "sugar-activities/jigsaw-puzzle/ka/>\n"
@@ -156,7 +156,7 @@ msgstr ""
 
 #: mmm_modules/buddy_panel.py:121
 msgid "Unknown"
-msgstr ""
+msgstr "უცნობი"
 
 #: mmm_modules/buddy_panel.py:123
 #, python-format
@@ -201,7 +201,7 @@ msgstr ""
 
 #: mmm_modules/i18n.py:45
 msgid "French"
-msgstr ""
+msgstr "ფრანგული"
 
 #: mmm_modules/i18n.py:46
 msgid "German"
