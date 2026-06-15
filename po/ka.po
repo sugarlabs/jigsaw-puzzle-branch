@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-07 17:44+1000\n"
-"PO-Revision-Date: 2026-05-19 11:33+0000\n"
+"PO-Revision-Date: 2026-06-15 03:03+0000\n"
 "Last-Translator: NF <rkavt@smartprojects.ge>\n"
 "Language-Team: Georgian <http://weblate.sugarlabs.org/projects/"
 "sugar-activities/jigsaw-puzzle/ka/>\n"
@@ -185,7 +185,7 @@ msgstr ""
 
 #: mmm_modules/i18n.py:41
 msgid "English"
-msgstr ""
+msgstr "ინგლისური"
 
 #: mmm_modules/i18n.py:42
 msgid "English - Great Britain"
@@ -249,7 +249,7 @@ msgstr ""
 
 #: mmm_modules/i18n.py:57
 msgid "Spanish"
-msgstr ""
+msgstr "ესპანური"
 
 #: mmm_modules/i18n.py:58
 msgid "Swedish"
